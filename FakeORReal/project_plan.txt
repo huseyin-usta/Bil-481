@@ -1,0 +1,83 @@
+Proje Kapsamı:
+    Dahil Olanlar:
+        GUI Geliştirme:  
+            PyQt5 kullanılarak tasarlanmış grafiksel kullanıcı arayüzü, kullanıcıdan resim alma (sürükle–bırak ve dosya seçimi), tahmin sırasında animasyonlar (düşünme animasyonu, sinir ağı animasyonu, açılış animasyonu) ve tahmin sonuçlarının pop-up ile gösterimi.
+            Kullanıcının sorgu yaptığı resimler için geçmiş kaydının tutulması (resim dosya yolu, sorgu tarihi-saat, tahmin sonuçları, kullanılan model).
+            Model seçme opsiyonu (sistem özelliklerine göre model önerme) ve yerel modelin CSV dosyası aracılığıyla fine-tune edilebilme özelliği.
+        Derin Öğrenme Modeli Geliştirme:  
+            PyTorch kullanılarak üç farklı modelin (küçük, orta, büyük) tasarlanması, eğitilmesi, test ve doğrulama scriptlerinin hazırlanması.
+            Eğitim sürecinde modelin performansının (loss, accuracy) izlenmesi ve en iyi modelin kontrol noktası (checkpoint) olarak kaydedilmesi.
+        Veri Seti Hazırlığı:  
+            Yaklaşık 100.000 resimden oluşan veri setinin oluşturulması; alt bileşenler olarak:
+            Train Dataset: 75.000+ resim ve etiketlerinin CSV dosyasında tutulması.
+            Validation Dataset: Yaklaşık 5.000 resim.
+            Test Dataset: Yaklaşık 6.000 resim.
+    Dahil Olmayanlar:
+        İnternetten otomatik veri çekme, web servis entegrasyonları veya ileri seviye model optimizasyonu gibi ek özellikler bu kapsamda yer almayacaktır.
+
+Proje Organizasyonu.
+    Hüseyin Yiğit USTA:
+        Rol: Takım kaptanı, product owner.
+        Görev: Model eğitimi ve yeni fikirlerin üretilmesi, bu alandaki çalışmaların araştırılması.
+    Mehmet Akif APAYDIN:
+        Rol: Scrum Master.
+        Görev: Modele eğitimi ve yeni fikirlerin implementasyonu, bu alandaki çalışmaların araştırılması.
+    Berk Kaftancıoğlu:
+        Rol: Designer.
+        Görev: Kullanıcı arayüzünün tasarlanması ve yeni fikirlerin implementasyonu.
+
+Hedefler:
+    Kullanıcı dostu ve işlevsel bir GUI oluşturmak.
+    Farklı donanım özelliklerine göre uygun derin öğrenme modelinin seçilmesini sağlamak.
+    Üç model varyantı ile yüksek doğrulukta tahminler gerçekleştirmek.
+    Kullanıcı sorgularını ve sonuçlarını kaydederek geçmiş yönetimini sağlamak.
+    Modelin yerel olarak fine-tune edilebilmesini sağlayarak sürekli iyileştirme mekanizması kurmak.
+
+Proje Zamanlaması:
+    Model eğitim ve test scriptlerinin yazılması:
+        20-25 Şubat.
+    GUI Tasarımı:
+        15 Şubat - Projenin bitimine kadar yeni featureler eklenmeye devam edecek.
+    Model Eğitimi:
+        2 Mart - Proje bitimine kadar yeni modeller ve yeni fikirlerin eğitilip denenmesi.
+
+Kaynak planlaması:
+    Yazılım Araçları ve Kütüphaneler:  
+        PyQt5, Qt Designer, PyTorch, torchvision, numpy, PIL, matplotlib.
+    Geliştirme Ortamı:  
+        VS Code IDE.
+    Donanım:  
+        Nvidia RTX 2080 TI Ekran kartı
+        Intel I5 9. Nesil işlemci
+    Veri Seti:  
+        Yaklaşık 100.000 resim; yerel diskte saklanacak.
+    Ek Kaynaklar:  
+        İlgili dokümantasyon, bu alanda önceden yapılmış bazı çalışmalar.
+
+Risk Yönetimi:
+    Teknik Zorluklar:  
+        PyTorch modellerinde beklenmeyen performans veya entegrasyon sorunları.  
+        Önlem: Erken prototipleme, düzenli kod gözden geçirmeleri.
+    Zaman Gecikmeleri:  
+        Geliştirme sürecinde beklenmedik aksaklıklar.  
+        Önlem: Esnek zaman çizelgesi ve acil durum planları.
+    Veri Kalitesi:  
+        Veri setinde etiket hataları veya yetersiz veri.  
+        Önlem: Veri doğrulama, ek veri toplama stratejileri.
+
+İletişim Planı:
+    Kurulan whatsapp grubu üzerinden gelişmeler sık sık ekip içinde aktarıldı.
+    Haftalık yüzyüze toplantılar, sprint retrospective, yapılarak kod gözden geçirildi ve demolar yapıldı.
+
+Değişiklik Yönetim Planı:
+    Değişiklik talepleri takım kaptanı tarafından değerlendirilir.
+    Onaylanan değişiklikler, etkilenen modüller için ek zaman çizelgesi ve kaynak planlaması yapılır.
+
+Bütçe ve Kaynak Planlaması:
+    Bütçe:
+        Ekran kartı, elektrik faturası, model eğitme, veri seti oluşturma vb. maliyetler için yaklaşık 30.000₺
+    Kaynaklar:
+        RTX 2080 TI Ekran kartı
+        İntel i5 9. nesil işlemci
+        Model eğitimi için gereken süre
+        Oluşturulan veri seti

@@ -1,0 +1,46 @@
+Proje Adı: ¿Fake or Real?
+
+Proje Özeti:
+Bu proje son yıllarda oldukça popüler olan ve resim yaratabilen yapay zekaların kötüye kullanımının önüne geçmeyi amaçlamaktadır.
+Verilen bir resmin AI Made veya Human Made olduğunu tespit edebilecek yapay zeka modellerinin yanında güzel  bir arayüz ile geliyor.
+Uygulamamızın en önemli avantajlarından biri yerelde çalışması ve kullanıcının isteklerine veya kullanıcının geri dönüşlerine göre fine tune edilebiliyor olması.
+
+Proje Hedefleri:
+Bu proje ile verilen resimlerin AI veya Human Made olarak classify edilmesi ve olası dolandırıcılıkların önüne geçilmesi hedeflenmektedir.
+
+Proje Kapsamı:
+Bu proje bir kullanıcı arayüzü ve yapay sinir ağları modelinin eğitilmesini kapsamaktadır.
+
+Projenin Hedef Kitlesi:
+Yaptığımız projenin hedef kitlesi genel olarak toplumun her bir bireyini içerse de genel olarak görsel veya video yüklenilen sitelerde AI detection taskı için bir hizmet şeklinde kullanılabilir.
+
+Projemizin Anahtar Özellikleri:
+1. Verdiğiniz csv dosyası ile modellerimizi fine tune edebilme.
+2. Resimleri sürükleyerek girdi verebilme.
+3. Model seçme ve donanımınıza göre bir model önerme opsiyonu.
+4. Yerelde çalışması, sizin verinizle sizin istemediğiniz takdirde eğitilmemesi.
+5. Kullanıcının verdiği resimler için feedback vererek yerelindeki modeli iyileştirebilmesi.
+
+Deliverables:
+1. GUI (Grafiksel Kullanıcı Arayüzü)
+2. Deep Learning Modeli (PyTorch Tabanlı)
+
+Bütçe ve Kaynaklar:
+    Bütçe:
+        Ekran kartı, elektrik faturası, model eğitme, veri seti oluşturma vb. maliyetler için yaklaşık 30.000₺
+    Kaynaklar:
+        RTX 2080 TI Ekran kartı
+        İntel i5 9. nesil işlemci
+        Model eğitimi için gereken süre
+        Oluşturulan veri seti
+
+Riskler ve Risklere Karşı Politikalar:
+    Data leakage:
+        Data setindeki bazı resimler AI Made eşleriyle birlikte geliyor, bu resimlerin eşleri ile aynı sette olmasına özen gösterilecek.
+    Kişisel verilerin korunması:
+        Kullanıcıdan alınan verinin gradyant hesabının gizlenmesi ile kullanıcılarımızın verilerinin güvenliği sağlanılacak.
+
+Proje Başarı Kriterleri:
+    1. Modelimizin dış dünya datasetinde 0.8 ve üzeri bir F1 skoru yapması.
+    2. Sürükleyerek input vermesi, csv dosyası ile tune etme işlemlerinin doğru çalışması.
+    3. GUI'nin kullanıcı dostu olamsı, geçmiş tutabilmesi, verilen resmi resize ederek ekrana bastırması.

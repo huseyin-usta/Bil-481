@@ -1,0 +1,37 @@
+Üçüncü ekip toplantısı - 10 Mart 2025
+
+Toplantı Hüseyin Yiğit USTA ve Mehmet Akif APAYDIN ile başladı. - 10.30
+
+Berk Kaftanoğlu toplantıya katıldı. 10.31
+
+Projenin gidişatı hakkında konuşuldu. - 10.33
+
+PA2 incelenmeye başladı. - 10.35
+
+Design dokümanı hazırlandı, gözden geçirilip githuba yüklenmesi kararı alındı. - 11.05
+
+Kalite dokümanı hazırlandı., gözden geçirilip githuba yüklenmesi kararı alındı. - 11.20
+
+Model eğitimi için planlama yapıldı, planlama şu şekilde: - 11.25
+
+    Hüseyin Yiğit USTA:
+        Efficient Net B5
+        ResNet 51    
+        ResNet 102    
+        ConvNext  
+        MobileNet
+
+    Mehmet Akif APAYDIN:
+        Efficient Net B3
+        Efficient Net B6
+        ResNet 152    
+        Chexnet
+        DenseNet
+
+CNN modellerinin fine tune edilmesi ve loglarının birleştirilerek githuba trainlog.txt şeklinde yüklenmesi.
+
+GUI tarafında gelişmeler ve değişiklikler planlandı: - 11.30
+    Kullanıcı geçmişinin kayıt sisteminin implementasyonu ve testleri
+    Fine tune için csv dosyasının alınması ardından fine_tune.py scriptlerinin hazırlanması.
+
+Toplantı tüm üyelerin varlığıyla sona erdirildi. - 11.30

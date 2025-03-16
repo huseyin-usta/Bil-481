@@ -1,1 +1,48 @@
 Efficient Net B5 Eğitim Logu:
+
+Model adının yorumlanması:
+b5 -> Efficient Net B5 modeli
+lr-4 -> learning rate hiperparametresini 1e-4 seçtik
+224x224 -> 224*224 boyutundaki resimlerle eğittik
+bs16 -> Batch size parametresini 16 yaptık
+
+
+Epoch 1/15 - Time: 447.19s - Train Loss: 0.3656 - Train Acc: 0.8413 - Val Loss: 639.4389 - Val Acc: 0.8842
+model saved as model_saves/b5_lr-4_224x224_bs16/weights_at_1.pth!
+                                                                          
+Epoch 2/15 - Time: 447.91s - Train Loss: 0.3149 - Train Acc: 0.8659 - Val Loss: 4430.8314 - Val Acc: 0.8864
+model saved as model_saves/b5_lr-4_224x224_bs16/weights_at_2.pth!
+                                                                          
+Epoch 3/15 - Time: 448.16s - Train Loss: 0.3126 - Train Acc: 0.8674 - Val Loss: 1962.2497 - Val Acc: 0.8943
+model saved as model_saves/b5_lr-4_224x224_bs16/weights_at_3.pth!
+                                                                          
+Epoch 4/15 - Time: 447.73s - Train Loss: 0.3108 - Train Acc: 0.8680 - Val Loss: 33244.1964 - Val Acc: 0.8880
+                                                                          
+Epoch 5/15 - Time: 447.95s - Train Loss: 0.3058 - Train Acc: 0.8692 - Val Loss: 9698.4738 - Val Acc: 0.8911
+                                                                          
+Epoch 6/15 - Time: 445.46s - Train Loss: 0.3056 - Train Acc: 0.8691 - Val Loss: 27509.4503 - Val Acc: 0.8901
+                                                                          
+Epoch 7/15 - Time: 446.08s - Train Loss: 0.3050 - Train Acc: 0.8700 - Val Loss: 8021.6478 - Val Acc: 0.8912
+                                                                          
+Epoch 8/15 - Time: 447.73s - Train Loss: 0.3046 - Train Acc: 0.8688 - Val Loss: 1880.5810 - Val Acc: 0.8964
+model saved as model_saves/b5_lr-4_224x224_bs16/weights_at_8.pth!
+                                                                          
+Epoch 9/15 - Time: 446.69s - Train Loss: 0.3056 - Train Acc: 0.8690 - Val Loss: 723.0637 - Val Acc: 0.8922
+Model unfrozen at epoch 10!
+                                                                           
+Epoch 10/15 - Time: 943.15s - Train Loss: 0.1391 - Train Acc: 0.9471 - Val Loss: 2.1300 - Val Acc: 0.9720
+model saved as model_saves/b5_lr-4_224x224_bs16/weights_at_10.pth!
+                                                                           
+Epoch 11/15 - Time: 942.93s - Train Loss: 0.0719 - Train Acc: 0.9732 - Val Loss: 0.0724 - Val Acc: 0.9711
+                                                                           
+Epoch 12/15 - Time: 940.27s - Train Loss: 0.0608 - Train Acc: 0.9777 - Val Loss: 0.0373 - Val Acc: 0.9866
+model saved as model_saves/b5_lr-4_224x224_bs16/weights_at_12.pth!
+                                                                           
+Epoch 13/15 - Time: 941.44s - Train Loss: 0.0509 - Train Acc: 0.9808 - Val Loss: 0.0302 - Val Acc: 0.9887
+model saved as model_saves/b5_lr-4_224x224_bs16/weights_at_13.pth!
+                                                                           
+Epoch 14/15 - Time: 941.00s - Train Loss: 0.0466 - Train Acc: 0.9828 - Val Loss: 0.0456 - Val Acc: 0.9850
+                                                                           
+Epoch 15/15 - Time: 937.19s - Train Loss: 0.0436 - Train Acc: 0.9841 - Val Loss: 0.0421 - Val Acc: 0.9873
+
+Dış dünya data set başarımı(accuracy): %72.34

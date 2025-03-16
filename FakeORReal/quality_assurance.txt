@@ -1,0 +1,98 @@
+İçindekiler
+1. Görev Matrisi (Task Matrix)
+2. Katkıda Bulunanlar
+3. Kalite Güvence Stratejisi
+   3.1. Genel Bakış
+   3.2. Test Yöntemleri
+   3.3. Otomatik ve Manuel Test Ayrımı
+3. Kalite Faktörleri ve Metriği
+   - Belirlenen 4 kalite faktörü ve ölçüm metrikleri
+4. Test Planı
+   4.1. Test Vakaları
+   4.2. Hata Takip Süreci
+
+1. Görev Matrisi (Task Matrix)
+
+| Görev                                  | Sorumlu Kişi                             |
+|----------------------------------------|------------------------------------------|
+| QA Stratejisi Belirleme                | Hüseyin Yiğit USTA                       |
+| Test Vakalarının Hazırlanması          | Mehmet Akif APAYDIN                      |
+| Otomatik Test Script’lerinin Yazılması | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
+| Hata Takip Sürecinin Tanımlanması      | Tüm Ekip                                 |
+| Kullanıcı Kabul Testleri               | Tüm Ekip                                 |
+
+2. Katkıda Bulunanlar
+
+- Berk Kaftanoğlu – GUI Geliştirme ve Qt Designer
+- Mehmet Akif APAYDIN & Hüseyin Yiğit USTA – Derin Öğrenme Mühendisleri (PyTorch)
+- Mehmet Akif APAYDIN & Hüseyin Yiğit USTA – Veri Uzmanı (Veri Seti Hazırlığı)
+- Berk Kaftanoğlu – Entegrasyon & Test
+
+3. Kalite Güvence Stratejisi
+
+3.1. Genel Bakış
+Projenin tüm bileşenlerinin (GUI, derin öğrenme modelleri, veri seti entegrasyonu) hatasız, güvenli ve kullanılabilir olmasını sağlamak için sistematik bir kalite güvencesi yaklaşımı uygulanacaktır. Bu strateji, hem otomatik testler hem de manuel test süreçlerini içerecektir.
+
+3.2. Test Yöntemleri
+- Birim Testleri: Her modülün (GUI fonksiyonları, model fonksiyonları, veri işleme) bağımsız olarak test edilmesi.
+- Entegrasyon Testleri: Farklı modüllerin birlikte çalışabilirliğinin kontrol edilmesi.
+- Kullanılabilirlik Testleri: Kullanıcı arayüzlerinin işlevselliğinin ve kullanıcı deneyiminin değerlendirilmesi.
+
+3.3. Otomatik ve Manuel Test Ayrımı
+- Otomatik Testler:
+  - Model eğitim ve test script’leri üzerinden loss ve doğruluk metriklerinin hesaplanması.
+  - GUI bileşenlerinin işlevselliğinin (ör. buton tıklama, resim yükleme) otomatik test script’leri.
+- Manuel Testler:
+  - Kullanıcı kabul testleri, kullanılabilirlik değerlendirmesi ve arayüz doğrulaması.
+
+4. Kalite Faktörleri ve Metriği
+
+| Kalite Faktörü    | Açıklama                                          | Ölçüm Metriği                                    |
+|-------------------|---------------------------------------------------|--------------------------------------------------|
+| Performans        | Sistem yanıt süresi ve işlem hızı                 | Ortalama yanıt süresi (ms)                       |
+| Kullanılabilirlik | Kullanıcı dostu arayüz ve etkileşim kolaylığı     | Kullanıcı memnuniyeti anket skorları             |
+| Doğruluk          | Sistemin yanıtlarının doğruluğu                   | Sistemin yanıtlarının belli bir f1 skoru yapması |
+| Güvenilirlik      | Sistemin kullanıcı verilerini korunması           | Sisteme girilen verilerin yerelde işlenmesi      |
+
+5. Test Planı
+
+5.1. Test Vakaları
+1. Resim Yükleme Testi:
+   - Amaç: Kullanıcının sürükle–bırak veya dosya seçimiyle resim yükleyebilmesi.
+   - Adımlar:
+     1. Kullanıcı GUI’de resim yükleme alanına resim sürükler.
+     2. Resmin ekranda görüntülendiği doğrulanır.
+   - Başarı Kriteri: Resim doğru boyut ve formatta görüntüleniyor.
+
+2. Tahmin Sonuçları Pop-up Testi:
+   - Amaç: Tahmin sonuçlarının pop-up ile doğru şekilde gösterilmesi.
+   - Adımlar:
+     1. Bir resim yüklendikten sonra tahmin işlemi başlatılır.
+     2. Pop-up penceresinde tahmin sonuçları kontrol edilir.
+   - Başarı Kriteri: Pop-up doğru bilgiler içeriyor.
+
+3. Geçmiş Kayıt Testi:
+   - Amaç: Kullanıcının sorgu yaptığı resimlerin geçmiş kaydının tutulması.
+   - Adımlar:
+     1. Bir resim sorgulanır.
+     2. Geçmiş kaydı ekranında resim dosya yolu, tarih-saat, tahmin sonucu ve model bilgisi kontrol edilir.
+   - Başarı Kriteri: Tüm bilgiler doğru ve eksiksiz kaydedilmiş.
+
+4. Fine-Tune (İnce Ayar) Testi:
+   - Amaç: Kullanıcının yerel modeli CSV dosyası aracılığıyla güncelleyebilmesi.
+   - Adımlar:
+     1. CSV dosyası yüklenir.
+     2. Model güncelleme işlemi başlatılır ve sonuçlar kontrol edilir.
+   - Başarı Kriteri: Model, kullanıcı girdilerine göre başarıyla güncelleniyor.
+
+5. Cuda Kontrolü Testi:
+    - Amaç: Kullanıcının Cudaya sahip olup olmadığı ölçülmeli.
+    - Adımlar:
+        1. Kullanıcı uygulamaya giriş yapar ve uygulama ilk açıldığında cuda kontrolü yapar.
+        2. Eğer cuda yoksa ekrana sistemin çalışma zamanının uzun sürebileceğine dair bir uyarı bastırır.
+    - Başarı kriteri: Cudaya sahip olan ve olmayan bilgisayarlar için doğru çalışması.
+
+5.2. Hata Takip Süreci
+- Araç: Toplantı tutanakları ve WP grubu kullanılacaktır.
+- Süreç: Tespit edilen her hata, detaylı açıklama, adım adım yeniden üretim ve ekran görüntüleriyle birlikte raporlanır.
+- Takip: Hataların çözümü için sorumlu ekip üyesi atanır, çözüm uygulanır ve sonraki toplantıda gözden geçirilir.

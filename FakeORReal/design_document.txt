@@ -1,0 +1,167 @@
+İçindekiler
+1. Görev Matrisi (Task Matrix)
+2. Katkıda Bulunanlar
+3. Sistem Genel Bakış
+   3.1. Proje Açıklaması
+   3.2. Sistem Mimarisi
+   3.3. Teknoloji Yığını
+4. Uygulama Detayları
+   4.1. Kod Tabanı Yapısı
+   4.2. Ana Bileşenler ve Modüller
+5. Kullanım Senaryoları ve Gereksinim Eşleştirmesi
+   5.1. Seçilen 4 Kullanım Senaryosu
+   5.2. Gereksinim Eşleştirmesi
+   5.3. Senaryo Tasarımı (Veri Akışı, Durum Diyagramları)
+   5.4. Demo Gereksinimi
+6. Tasarım Kararları
+   6.1. Teknoloji Seçimlerinin Sebepleri
+   6.2. Fine-tune Etme Opsiyonu
+   6.3. Geniş İnput Olanakları
+7. GitHub Commit Gereksinimi
+
+1. Görev Matrisi (Task Matrix)
+
+| Görev                                 | Sorumlu Kişi                             |
+|---------------------------------------|------------------------------------------|
+| GUI Tasarım ve Geliştirme             | Berk KAFTANOĞLU                          |
+| Model Mimarisinin Tasarımı            | Hüseyin Yiğit USTA                       |
+| Veri Seti Hazırlığı                   | Mehmet Akif APAYDIN                      |
+| Model Eğitimi                         | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
+| Yeni Eğitim Stratejilerinin Bulunması | Hüseyin Yiğit USTA                       |
+| Entegrasyon ve Test                   | Tüm Ekip                                 |
+| Demo ve Sunum Hazırlığı               | Tüm Ekip                                 |
+
+2. Katkıda Bulunanlar
+
+- Berk Kaftanoğlu – GUI Geliştirme ve Qt Designer
+- Mehmet Akif APAYDIN & Hüseyin Yiğit USTA – Derin Öğrenme Mühendisleri (PyTorch)
+- Mehmet Akif APAYDIN & Hüseyin Yiğit USTA – Veri Uzmanı (Veri Seti Hazırlığı)
+- Berk Kaftanoğlu – Entegrasyon & Test
+
+3. Sistem Genel Bakış
+
+3.1. Proje Açıklaması
+"¿Fake or Real?" projesi, kullanıcıların bir GUI aracılığıyla resim yükleyip, derin öğrenme modelleri kullanarak bu resimlerin sahte (fake) veya gerçek (real) olup olmadığını tahmin edebildiği bir uygulamadır. Proje, PyQt5 ile geliştirilmiş modern bir arayüz, PyTorch tabanlı üç model varyantı (küçük, orta, büyük) ve 100.000 civarında resimden oluşan kapsamlı bir veri setine dayanmaktadır.
+
+3.2. Sistem Mimarisi
+- Katmanlı Mimari:
+  - Kullanıcı Arayüzü (Frontend): PyQt5 ile geliştirilmiş GUI, resim girişi, animasyonlar, tahmin sonuçlarının pop-up gösterimi ve geçmiş kayıt yönetimi.
+  - İş Mantığı & Model İşlemleri (Backend): PyTorch tabanlı derin öğrenme modelleri ile tahmin ve model eğitimi, kontrol noktası kaydı.
+  - Veri Katmanı: Resim veri seti (Train, Validation, Test) ve ilgili CSV etiket dosyaları.
+
+3.3. Teknoloji Yığını
+- Programlama Dili: Python3
+- GUI: PyQt5
+- Derin Öğrenme: PyTorch, torchvision
+- Veri İşleme: pandas, numpy, Albumentations, transforms
+- Veri Seti Yönetimi: Dataset, DataLoader, DataSampler (PyTorch)
+- Diğer: GitHub (versiyon kontrol ve dokümantasyon)
+Bu teknolojilerin tercih edilme nedenlerine 6.1 kısmında değinilmiştir.
+
+4. Uygulama Detayları
+
+4.1. Kod Tabanı Yapısı
+- /Codes:  
+  - /gui: PyQt5 arayüz kodları, Qt Designer ile oluşturulan .ui dosyaları ve bunların Python çevirileri.
+  - models.py: PyTorch ile geliştirilen derin öğrenme model tanımları (küçük, orta, büyük model dosyaları).
+  - train.py: Eğitim, test ve validation scriptleri.
+  - test.py: Test scriptleri.
+- /Eğitim Logları: Proje ile ilgili eğitilen modellerin loglarını içeren klasör.
+- /FakeORReal: Proje ile ilgili dokümanları ve toplantı tutanaklarını içeren klasör.
+- /Toplantı Tutanakları: Yapılan toplantıların tutanakları içeren klasör.
+
+4.2. Ana Bileşenler ve Modüller
+- GUI Modülü: Resim yükleme, animasyonlar, tahmin sonuç pop-up’ı, geçmiş kayıt yönetimi, model seçme ve fine-tune opsiyonları.
+- Model Modülü: Model tanımlanması, eğitim fonksiyonları, test ve kontrol noktası kaydı.
+- Veri Modülü: Resim veri setinin bölünmesi, normalizasyon, TensorDataset ve DataLoader entegrasyonu.
+
+5. Kullanım Senaryoları ve Gereksinim Eşleştirmesi
+
+5.1. Seçilen 4 Kullanım Senaryosu
+1. Kullanıcının resim yüklemesi ve tahmin sürecini başlatması.
+2. Tahmin sürecinde animasyonların oynatılması ve tahmin sonuçlarının pop-up ile gösterilmesi.
+3. Kullanıcının sorgulanan resimler için geçmiş kaydının otomatik tutulması.
+4. Kullanıcının yerelindeki modeli CSV dosyası aracılığıyla ince ayar yapabilmesi.
+
+5.2. Gereksinim Eşleştirmesi
+- Senaryo 1: Resim girişi (sürükle–bırak ve dosya seçimi) gereksinimi.
+- Senaryo 2: Animasyon ve pop-up ile tahmin sonucu gösterimi gereksinimi.
+- Senaryo 3: Geçmiş kayıt modülünün işlevselliği (dosya yolu, tarih, tahmin, model bilgisi).
+- Senaryo 4: Fine-tune opsiyonları.
+
+5.3. Senaryo Tasarımı
+Senaryo 1: Resim Girişi (Sürükle–Bırak ve Dosya Seçimi)
+Veri Akışı Diyagramı:
+1. Kullanıcı, GUI üzerinden sürükle-bırak veya dosya seçme yoluyla bir resim yükler.
+2. Sistem, yüklenen resmin formatını ve boyutlarını kontrol eder.
+3. Geçerli bir dosya ise, resim önizleme alanında gösterilir.
+4. Resim, derin öğrenme modeline gönderilir.
+5. Model tahmine başlar.
+6. Model tahmini sırasında ekranda animasyon gösterilir.
+
+Durum Diyagramı:
+- Başlangıç: Kullanıcı arayüzü açılır.
+- Resim Yükleme: Kullanıcı bir resim yükler.
+- Dosya Kontrolü: Geçerli olup olmadığı kontrol edilir.
+- Tahmin Süreci: Model tahmin yaparken kullanıcıya bir animasyon gösterilir.
+
+Senaryo 2: Pop-up ile Tahmin Sonucu Gösterimi
+Veri Akışı Diyagramı:
+1. Model tahmin sonucunu GUI’ye iletir.
+2. GUI, sonucu metin ve grafiksel formatta işler.
+3. Pop-up ile sonuç kullanıcıya sunulur.
+4. Kullanıcı sonucu değerlendirir ve sonuç kaydedilir.
+
+Durum Diyagramı:
+- Tahmin Sonucu: Model tahmin sonucunu döndürür.
+- Sonuç Gösterimi: Tahmin sonucu pop-up açılır ve sonuç gösterilir.
+- Son: Kullanıcı işlemi sonlandırabilir ya da yeni bir tahmin yapabilir.
+
+Senaryo 3: Geçmiş Kayıt Modülü
+Veri Akışı Diyagramı:
+1. Kullanıcı bir tahmin gerçekleştirdiğinde sistem, dosya yolu, tarih, tahmin sonucu ve model bilgisini saklar.
+2. Kullanıcı geçmiş kayıtları görmek istediğinde GUI üzerinden geçmiş tahminleri görebilir.
+3. Kullanıcı, geçmiş tahminleri inceleyebilir ve karşılaştırabilir.
+
+Durum Diyagramı:
+- Model tahmin yaptı.
+- Sistem sonucu kaydetti.
+- Kullanıcı geçmiş kayıtları görüntülemek istedi.
+- Kayıtlar listelendi.
+- Kullanıcı kayıtları inceleyebilir veya silebilir.
+
+Senaryo 4: Fine-Tune Opsiyonu
+Veri Akışı Diyagramı:
+1. Kullanıcı, modelin eğitilmesini özelleştirmek için .csv uzantılı dosyayı sürükleyerek sisteme yükler.
+2. Sistem, .csv uzantılı dosyayı işler.
+2. Sistem, işlenen .csv dosyası ile eğitim sürecini başlatır.
+3. Eğitim tamamlandığında, yereldeki model güncellenir ve kullanıcı tahmin yapabilir.
+
+Durum Diyagramı:
+- Kullanıcı .csv uzantılı dosyayı sisteme yükledi.
+- Sistem yeni eğitimi başlattı.
+- Eğitim tamamlandı ve model güncellendi.
+- Kullanıcı güncellenmiş modelle tahmin yapabilir.
+
+5.4. Demo Gereksinimi
+- Belirlenen 4 kullanım senaryosunun final demo sırasında eksiksiz olarak çalışır durumda sunulması gerekmektedir.
+
+6. Tasarım Kararları
+
+6.1. Teknoloji Seçimlerinin Sebepleri		
+- Python3: Yapay zeka uygulamalarına elverişli ve birçok kütüphane ile birçok donanıma destek verebilen bir dil olduğu için Python3 kullandık.
+- PyQt5: Sürükleyerek dosya aktarımını desteklediği ve kullanımı rahat olduğu için PyQt5 kullandık.
+- PyTorch ve torchvision: Elimizdeki GPU'lar NVIDIA olduğundan dolayı bu PyTorchu ve torchvisionu tercih ettik tercih ettik.
+- Veri İşleme: csv, excel gibi yaygın dosya biçimlerini okuma ve geniş yeteneklere sahip olmasından dolayı pandas, Albumentationun numpy objeleri ile birlikte daha iyi çalışmasından dolayı numpy ve zengin augmentationlar sundukları için Albumentations ve transforms 
+
+6.2 Fine-tune Etme Opsiyonu
+- Kullanıcının csv dosyası ile yerelindeki modeli kendi özel amaçları için fine tune etmesi ve spesifik olarak yaptığı iş için daha iyi sonuçlar elde etmesini sağlamak için fine tune opsiyonu da eklenildi.
+- Kullanıcının fine tune etmesinin yanında modeli resetlemesi ve fine tune ettiği modeli kaydedebilmesi gibi özellikler de sağlanılmıştır.
+
+6.3 Geniş İnput Olanakları
+- Kullanıcı dostu olması amacıyla kullanıcıdan input alırken dosyanın sürüklenerek veya dosya gezgininden seçilerek programa input olarak alınmasıyla kullanım kolaylığı sağlandı.
+
+7. GitHub Commit Gereksinimi
+
+- Kod Implementasyonları & Arayüz Tasarımları:
+  - Tüm GUI, model ve veri işleme kodları GitHub repository’sine yüklenmeli, haftalık toplantılarda uygun commit mesajları ile hangi modülün hangi aşamada geliştirildiği haftalık olarak izlenmelidir.

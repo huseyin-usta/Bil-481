@@ -21,15 +21,12 @@
 
 1. Görev Matrisi (Task Matrix)
 
-| Görev                                 | Sorumlu Kişi                             |
-|---------------------------------------|------------------------------------------|
-| GUI Tasarım ve Geliştirme             | Berk KAFTANOĞLU                          |
-| Model Mimarisinin Tasarımı            | Hüseyin Yiğit USTA                       |
-| Veri Seti Hazırlığı                   | Mehmet Akif APAYDIN                      |
-| Model Eğitimi                         | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
-| Yeni Eğitim Stratejilerinin Bulunması | Hüseyin Yiğit USTA                       |
-| Entegrasyon ve Test                   | Tüm Ekip                                 |
-| Demo ve Sunum Hazırlığı               | Tüm Ekip                                 |
+| Görev                                | Sorumlu Kişi                             |
+|--------------------------------------|------------------------------------------|
+| Sistem Bilgilerin Yazılması          | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
+| Uygulama Detaylarının Yazılması      | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
+| Kullanım Senaryolarının Yazılması    | Berk KAFTANOĞLU                          |
+| Tasarım Karar Nedenlerinin Yazılması | Tüm Ekip                                 |	
 
 2. Katkıda Bulunanlar
 

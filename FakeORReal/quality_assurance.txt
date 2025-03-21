@@ -13,13 +13,12 @@
 
 1. Görev Matrisi (Task Matrix)
 
-| Görev                                  | Sorumlu Kişi                             |
-|----------------------------------------|------------------------------------------|
-| QA Stratejisi Belirleme                | Hüseyin Yiğit USTA                       |
-| Test Vakalarının Hazırlanması          | Mehmet Akif APAYDIN                      |
-| Otomatik Test Script’lerinin Yazılması | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
-| Hata Takip Sürecinin Tanımlanması      | Tüm Ekip                                 |
-| Kullanıcı Kabul Testleri               | Tüm Ekip                                 |
+| Görev                          | Sorumlu Kişi                             |
+|--------------------------------|------------------------------------------|
+| QA Stratejisi Belirleme        | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
+| Kalite Faktörlerinin Yazılması | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
+| Test Vakalarının Yazılması     | Tüm Ekip                                 |
+| Hata Takip Sürecinin Yazılması | Berk KAFTANOĞLU                          |
 
 2. Katkıda Bulunanlar
 

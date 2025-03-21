@@ -5,18 +5,18 @@ import predict
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QLabel, QPushButton, QFileDialog,
     QMessageBox, QVBoxLayout, QWidget, QDialog, QHBoxLayout,
-    QListWidget, QListWidgetItem, QShortcut, QComboBox
+    QListWidget, QListWidgetItem, QShortcut, QComboBox, QSizePolicy
 )
-from PyQt5.QtGui import QPixmap, QFont, QKeySequence, QColor, QLinearGradient, QPainter
-from PyQt5.QtCore import Qt, QTimer, QFileInfo, QPoint
+from PyQt5.QtGui import QPixmap, QFont, QKeySequence, QColor, QLinearGradient, QPainter, QIcon
+from PyQt5.QtCore import Qt, QTimer, QFileInfo, QPoint, QSize
 
 def evaluate_image(image_path, model_type):
+    time.sleep(15)
     if model_type == "Large Model":
         return predict.predict_large(image_path)
-    elif model_type == "Mobile Model":
-        return predict.predict_mobile(image_path)
+    elif model_type == "Medium Model":
+        return predict.predict_medium(image_path)
     else:  # Small Model
-        time.sleep(10)
         return predict.predict(image_path)
 
 class ResultPopup(QDialog):
@@ -32,33 +32,39 @@ class ResultPopup(QDialog):
         self.layout.setContentsMargins(20, 20, 20, 20)
         self.layout.setSpacing(15)
         
-        # Title
         self.title_label = QLabel("Analysis Result", self)
         self.title_label.setAlignment(Qt.AlignCenter)
         self.title_label.setStyleSheet("""
             QLabel {
                 font: bold 24px Arial;
                 color: #FFFFFF;
-                padding: 10px;
+                background: transparent;
             }
         """)
         self.layout.addWidget(self.title_label)
 
-        # Result Content
         self.result_content = QWidget()
+        self.result_content.setStyleSheet("background: transparent;")
         result_layout = QVBoxLayout(self.result_content)
         result_layout.setSpacing(20)
         
         self.real_label = QLabel("Real:", self)
-        self.real_label.setStyleSheet("font: 20px Arial; color: #4CAF50;")
+        self.real_label.setStyleSheet("""
+            font: 20px Arial; 
+            color: #4CAF50;
+            background: transparent;
+        """)
         self.fake_label = QLabel("Fake:", self)
-        self.fake_label.setStyleSheet("font: 20px Arial; color: #F44336;")
+        self.fake_label.setStyleSheet("""
+            font: 20px Arial;
+            color: #F44336;
+            background: transparent;
+        """)
         
         result_layout.addWidget(self.real_label, 0, Qt.AlignCenter)
         result_layout.addWidget(self.fake_label, 0, Qt.AlignCenter)
         self.layout.addWidget(self.result_content)
 
-        # Close Button
         self.close_button = QPushButton("Close", self)
         self.close_button.setFixedSize(120, 40)
         self.close_button.setStyleSheet("""
@@ -78,9 +84,16 @@ class ResultPopup(QDialog):
         self.close_button.hide()
 
     def set_result(self, real_probability, fake_probability):
+        self.title_label.setText("Result:")
         self.real_label.setText(f"Real: {real_probability:.2f}%")
         self.fake_label.setText(f"Fake: {fake_probability:.2f}%")
         self.close_button.show()
+
+    def reset_results(self):
+        self.title_label.setText("Analysis Result")
+        self.real_label.setText("Real:")
+        self.fake_label.setText("Fake:")
+        self.close_button.hide()
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -98,49 +111,54 @@ class ImageClassifierApp(QMainWindow):
         self.setWindowTitle("Image Real/Fake Classifier")
         self.setGeometry(100, 100, 1200, 800)
         self.current_theme = "dark"
-        
-        # Initialize popup before theme setup
         self.popup = ResultPopup(self)
-        
         self.set_theme()
-        
         self.history = []
+        
+        # Main layout setup
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
         self.main_layout = QHBoxLayout(self.central_widget)
 
         # Left Panel
         left_panel = QWidget()
-        self.layout = QVBoxLayout(left_panel)
+        left_layout = QVBoxLayout(left_panel)
         self.main_layout.addWidget(left_panel, stretch=2)
 
         # Model Selection
         self.model_combo = QComboBox()
-        self.model_combo.addItems(["Small Model", "Large Model", "Mobile Model"])
+        self.model_combo.addItems(["Small Model", "Large Model", "Medium Model"])
         self.model_combo.setStyleSheet("""
             QComboBox {
                 font: 16px Arial;
-                padding: 8px;
+                padding: 8px 12px;
                 border-radius: 15px;
-                background-color: #FFFFFF;
-                color: #333333;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #2196F3, stop:1 #E91E63);
+                color: white;
+                border: 2px solid #FFFFFF;
             }
-            QComboBox::drop-down { border: none; }
+            QComboBox::drop-down {
+                subcontrol-origin: padding;
+                subcontrol-position: top right;
+                width: 24px;
+                border-left: 2px solid rgba(255, 255, 255, 100);
+            }
         """)
-        self.layout.addWidget(self.model_combo, alignment=Qt.AlignCenter)
+        left_layout.addWidget(self.model_combo, alignment=Qt.AlignCenter)
 
         # Image Canvas
         self.canvas = QLabel(self)
         self.canvas.setAlignment(Qt.AlignCenter)
         self.canvas.setFixedSize(700, 500)
-        self.layout.addWidget(self.canvas, alignment=Qt.AlignCenter)
+        left_layout.addWidget(self.canvas, alignment=Qt.AlignCenter)
         self.add_image_text()
 
         # Metadata
         self.meta_label = QLabel("", self)
         self.meta_label.setStyleSheet("color: inherit; font: 12px Arial;")
         self.meta_label.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(self.meta_label)
+        left_layout.addWidget(self.meta_label)
 
         # Load Button
         self.load_button = QPushButton("📁 Load Image", self)
@@ -158,23 +176,31 @@ class ImageClassifierApp(QMainWindow):
             QPushButton:pressed { background-color: #a23a24; }
         """)
         self.load_button.clicked.connect(self.load_image)
-        self.layout.addWidget(self.load_button, alignment=Qt.AlignCenter)
+        left_layout.addWidget(self.load_button, alignment=Qt.AlignCenter)
 
+        # Bottom left controls
+        bottom_left = QWidget()
+        bottom_left_layout = QHBoxLayout(bottom_left)
+        bottom_left_layout.setContentsMargins(0, 10, 0, 0)
+        
         # Theme Button
-        self.theme_button = QPushButton("🌓 Switch Theme", self)
+        self.theme_button = QPushButton("🌓", self)
+        self.theme_button.setFixedSize(40, 40)
         self.theme_button.setStyleSheet("""
             QPushButton {
-                font: bold 16px Arial;
-                padding: 12px 24px;
                 background-color: #6A6B6E;
                 color: white;
                 border-radius: 20px;
-                border: 2px solid #FFFFFF;
+                border: 1px solid rgba(255, 255, 255, 150);
+                font-size: 24px;
             }
             QPushButton:hover { background-color: #2196F3; }
         """)
         self.theme_button.clicked.connect(self.toggle_theme)
-        self.layout.addWidget(self.theme_button)
+        bottom_left_layout.addWidget(self.theme_button)
+        bottom_left_layout.addStretch()
+        
+        left_layout.addWidget(bottom_left)
 
         # Right Panel (History)
         right_panel = QWidget()
@@ -198,7 +224,6 @@ class ImageClassifierApp(QMainWindow):
         right_layout.addWidget(QLabel("📚 History:", self))
         right_layout.addWidget(self.history_list)
 
-        
         self.setAcceptDrops(True)
         self.is_loading = False
         self.loading_phase = 0
@@ -263,21 +288,19 @@ class ImageClassifierApp(QMainWindow):
             pixmap = pixmap.scaled(700, 500, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.canvas.setPixmap(pixmap)
             self.canvas.setText("")
+            self.popup.reset_results()
 
-            # Metadata
             file_info = QFileInfo(file_path)
             meta_text = f"""
                 📐 Dimensions: {pixmap.width()}x{pixmap.height()}
                 💾 Size: {file_info.size()/1024:.1f} KB
                 📅 Modified: {file_info.lastModified().toString('yyyy-MM-dd HH:mm')}
             """
-            self.meta_label.setStyleSheet("color: rgb(255, 255, 255);")
             self.meta_label.setText(meta_text)
 
-            # Add to history
-            history_entry = f"{file_info.fileName()} - {time.strftime('%H:%M:%S')}"
-            self.history_list.insertItem(0, QListWidgetItem(history_entry))
-
+            # Temporary history entry
+            self.temp_history_entry = f"{file_info.fileName()} - {time.strftime('%H:%M:%S')}"
+            
             self.show_loading_popup()
             threading.Thread(
                 target=self.evaluate_and_show_result,
@@ -297,11 +320,7 @@ class ImageClassifierApp(QMainWindow):
 
     def animate_loading(self):
         if self.is_loading:
-            phases = [
-                "Loading...",
-                "Evaluating...",
-                "Deciding..."
-            ]
+            phases = ["Loading...", "Evaluating...", "Deciding..."]
             self.popup.title_label.setText(phases[self.loading_phase])
             self.loading_phase = (self.loading_phase + 1) % 3
             QTimer.singleShot(800, self.animate_loading)
@@ -309,6 +328,14 @@ class ImageClassifierApp(QMainWindow):
     def evaluate_and_show_result(self, file_path, model_type):
         real_probability, fake_probability = evaluate_image(file_path, model_type)
         self.is_loading = False
+        
+        # Update history with results
+        result_text = (f"{self.temp_history_entry}\n"
+                      f"Model: {model_type} | "
+                      f"Real: {real_probability:.2f}% | "
+                      f"Fake: {fake_probability:.2f}%")
+        
+        self.history_list.insertItem(0, QListWidgetItem(result_text))
         self.popup.set_result(real_probability, fake_probability)
 
 if __name__ == "__main__":

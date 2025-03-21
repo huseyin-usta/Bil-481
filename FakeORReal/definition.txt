@@ -1,3 +1,11 @@
+Görev Matrisi (Task Matrix)
+
+| Görev                                | Sorumlu Kişi                             |
+|--------------------------------------|------------------------------------------|
+| Projeyle İlgili Detayların Yazılması | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
+| Bütçe ve Kaynakların Yazılması       | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
+| Proje Başarı Kriterlerinin Yazılması | Berk KAFTANOĞLU                          |
+
 Proje Adı: ¿Fake or Real?
 
 Proje Özeti:

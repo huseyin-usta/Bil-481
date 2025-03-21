@@ -1,3 +1,10 @@
+Görev Matrisi (Task Matrix)
+
+| Görev                                      | Sorumlu Kişi |
+|--------------------------------------------|--------------|
+| GUI Hakkında Gereksinimlerinin Yazılması   | Tüm Ekip     |
+| Model Hakkında Gereksinimlerinin Yazılması | Tüm Ekip     |
+
 Bu doküman Bil-481 dersinin projemiz olan "¿Fake or Real?" projesinin gereksinimlerini içerir.
 
 1. GUI: Pythonda "PyQt5" kütüphanesi kullanılarak tasarlanmış bir GUI.

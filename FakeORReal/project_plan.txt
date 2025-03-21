@@ -1,3 +1,14 @@
+Görev Matrisi (Task Matrix)
+
+| Görev                                                | Sorumlu Kişi                             |
+|------------------------------------------------------|------------------------------------------|
+| Proje Kapsamının Yazılması                           | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
+| Hedeflerin Yazılması                                 | Hüseyin Yiğit USTA & Mehmet Akif APAYDIN |
+| Proje Zamanlamasının Yazılması                       | Berk KAFTANOĞLU                          |
+| Risk Yönetiminin Yazılması                           | Tüm Ekip                                 |
+| İletişim ve Değişiklik Yönetim Planlarının Yazılması | Tüm Ekip                                 |
+| Bütçe ve Kaynak Planlamasının Yazılması              | Tüm Ekip                                 |
+
 Proje Kapsamı:
     Dahil Olanlar:
         GUI Geliştirme:  

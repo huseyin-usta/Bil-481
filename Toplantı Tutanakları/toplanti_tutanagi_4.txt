@@ -1,0 +1,28 @@
+Dördüncü ekip toplantısı - 17 Mart 2025
+
+Toplantı tüm ekip üyelerinin katılımı ile başladı. - 10.30
+
+Projenin gidişatı hakkında konuşuldu. - 10.35
+
+GUI ile ilgili kullanıcı testleri manuel olarak yapıldı. - 10.50
+Fine tune ile ilgili bulunan hatalar fix edildi. - 11.00
+
+Bu hafta içerisinde yüklenecek olan eğitim logları ile ilgili tartışıldı ve tüm ekip üyelerinin onayı ile bazı kararlar alındı: - 11.20
+    Modelin parametre sayısının artması ya da azalmasının başarıma etkisi çok az oldudundan en iyi sonuç veren modelin kullanılması kararlaştırıldı.
+    Model seçme mekaniği kaldırıldı, onun yerine fine tune edilmiş modeli veya temel modeli kullanma özelliği eklendi.
+    Model kayıt mekaniği ağırlıkları kaydetmek yerine modeli mimarisiyle birlikte kaydetmek şeklinde güncellendi, 
+    bu özellik kulıcının fine tune ettiği modelleri alıp başka yerlerde kullanmasına olanak sağlayacak.
+
+Alınan kararların üzerinde en iyi sonuç veren Efficient Net B5 modeli yeni kayıt mekaniğine göre kaydedildi. - 11.40
+Kodda gereken değişiklikler yapılarak yeni mekanik entegre edildi.
+
+Yeni mekanik test edildi: - 12.00
+    1) Prediction -> PASS
+    2) Fine Tune -> PASS
+
+CSV formatı kararlaştırıldı: 12.20
+    Header: file_name,label
+    file_name: Absolute path veya relative path şeklinde unix formatında ve çift tırnakları içermeyecek.
+    label: AI Generated görseller için 1, diğerleri için 0.
+
+Toplantı sona erdirildi - 12.30

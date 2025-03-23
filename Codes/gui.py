@@ -1,21 +1,22 @@
 import sys
 import threading
 import time
+import os
 import predict
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QLabel, QPushButton, QFileDialog,
     QMessageBox, QVBoxLayout, QWidget, QDialog, QHBoxLayout,
-    QListWidget, QListWidgetItem, QShortcut, QComboBox, QSizePolicy
+    QListWidget, QListWidgetItem, QShortcut, QComboBox, QMenu
 )
 from PyQt5.QtGui import QPixmap, QFont, QKeySequence, QColor, QLinearGradient, QPainter, QIcon, QMovie
-from PyQt5.QtCore import Qt, QTimer, QFileInfo, QPoint, QSize
+from PyQt5.QtCore import Qt, QTimer, QFileInfo, QPoint
 
 def evaluate_image(image_path, model_type):
     time.sleep(15)
     if model_type == "Large Model":
         return predict.predict_large(image_path)
-    elif model_type == "Mobile Model":
-        return predict.predict_mobile(image_path)
+    elif model_type == "Middle Model":
+        return predict.predict_middle(image_path)
     else:  # Small Model
         return predict.predict(image_path)
 
@@ -32,7 +33,6 @@ class ResultPopup(QDialog):
         self.layout.setContentsMargins(20, 20, 20, 20)
         self.layout.setSpacing(15)
         
-        # Title
         self.title_label = QLabel("Analysis Result", self)
         self.title_label.setAlignment(Qt.AlignCenter)
         self.title_label.setStyleSheet("""
@@ -44,7 +44,6 @@ class ResultPopup(QDialog):
         """)
         self.layout.addWidget(self.title_label)
 
-        # Loading Animation
         self.animation_label = QLabel(self)
         self.movie = QMovie("animation.gif")
         self.animation_label.setMovie(self.movie)
@@ -52,7 +51,6 @@ class ResultPopup(QDialog):
         self.animation_label.setStyleSheet("background: transparent;")
         self.layout.addWidget(self.animation_label)
 
-        # Result Content
         self.result_content = QWidget()
         self.result_content.setStyleSheet("background: transparent;")
         result_layout = QVBoxLayout(self.result_content)
@@ -76,7 +74,6 @@ class ResultPopup(QDialog):
         self.layout.addWidget(self.result_content)
         self.result_content.hide()
 
-        # Close Button
         self.close_button = QPushButton("Close", self)
         self.close_button.setFixedSize(120, 40)
         self.close_button.setStyleSheet("""
@@ -137,7 +134,6 @@ class ImageClassifierApp(QMainWindow):
         self.set_theme()
         self.history = []
         
-        # Main layout setup
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
         self.main_layout = QHBoxLayout(self.central_widget)
@@ -147,9 +143,8 @@ class ImageClassifierApp(QMainWindow):
         left_layout = QVBoxLayout(left_panel)
         self.main_layout.addWidget(left_panel, stretch=2)
 
-        # Model Selection
         self.model_combo = QComboBox()
-        self.model_combo.addItems(["Small Model", "Large Model", "Mobile Model"])
+        self.model_combo.addItems(["Small Model", "Large Model", "Middle Model"])
         self.model_combo.setStyleSheet("""
             QComboBox {
                 font: 16px Arial;
@@ -169,20 +164,17 @@ class ImageClassifierApp(QMainWindow):
         """)
         left_layout.addWidget(self.model_combo, alignment=Qt.AlignCenter)
 
-        # Image Canvas
         self.canvas = QLabel(self)
         self.canvas.setAlignment(Qt.AlignCenter)
         self.canvas.setFixedSize(700, 500)
         left_layout.addWidget(self.canvas, alignment=Qt.AlignCenter)
         self.add_image_text()
 
-        # Metadata
         self.meta_label = QLabel("", self)
         self.meta_label.setStyleSheet("color: rgb(255, 255, 255); font: 12px Arial;")
         self.meta_label.setAlignment(Qt.AlignCenter)
         left_layout.addWidget(self.meta_label)
 
-        # Load Button
         self.load_button = QPushButton("📁 Load Image", self)
         self.load_button.setStyleSheet("""
             QPushButton {
@@ -200,12 +192,10 @@ class ImageClassifierApp(QMainWindow):
         self.load_button.clicked.connect(self.load_image)
         left_layout.addWidget(self.load_button, alignment=Qt.AlignCenter)
 
-        # Bottom left controls
         bottom_left = QWidget()
         bottom_left_layout = QHBoxLayout(bottom_left)
         bottom_left_layout.setContentsMargins(0, 10, 0, 0)
         
-        # Theme Button
         self.theme_button = QPushButton("🌓", self)
         self.theme_button.setFixedSize(40, 40)
         self.theme_button.setStyleSheet("""
@@ -224,11 +214,36 @@ class ImageClassifierApp(QMainWindow):
         
         left_layout.addWidget(bottom_left)
 
-        # Right Panel (History)
-        right_panel = QWidget()
-        right_layout = QVBoxLayout(right_panel)
-        self.main_layout.addWidget(right_panel, stretch=1)
+        # Right Section
+        right_container = QWidget()
+        right_container.setLayout(QVBoxLayout())
+        right_container.layout().setContentsMargins(0, 0, 0, 0)
+        self.main_layout.addWidget(right_container, stretch=1)
 
+        # Toggle Button
+        self.toggle_history_btn = QPushButton("▼ Hide History", self)
+        self.toggle_history_btn.setStyleSheet("""
+            QPushButton {
+                font: bold 14px Arial;
+                padding: 5px 10px;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #2196F3, stop:1 #E91E63);
+                color: white;
+                border-radius: 15px;
+                border: 1px solid #FFFFFF;
+                margin-bottom: 5px;
+            }
+            QPushButton:hover { background-color: #eb6143; }
+        """)
+        self.toggle_history_btn.clicked.connect(self.toggle_history_visibility)
+        right_container.layout().addWidget(self.toggle_history_btn, 0, Qt.AlignCenter)
+
+        # History Panel
+        self.right_panel = QWidget()
+        self.right_panel.setVisible(True)
+        right_layout = QVBoxLayout(self.right_panel)
+        right_layout.setContentsMargins(0, 0, 0, 0)
+        
         self.history_list = QListWidget()
         self.history_list.setStyleSheet("""
             QListWidget {
@@ -243,9 +258,15 @@ class ImageClassifierApp(QMainWindow):
                 padding: 8px;
             }
         """)
+        self.history_list.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.history_list.customContextMenuRequested.connect(self.show_context_menu)
+        self.history_list.itemClicked.connect(self.re_evaluate_image)
         right_layout.addWidget(QLabel("📚 History:", self))
         right_layout.addWidget(self.history_list)
+        
+        right_container.layout().addWidget(self.right_panel)
 
+        QShortcut(QKeySequence("Ctrl+O"), self).activated.connect(self.load_image)
         self.setAcceptDrops(True)
         self.is_loading = False
         self.loading_phase = 0
@@ -263,7 +284,7 @@ class ImageClassifierApp(QMainWindow):
                 QPushButton { background-color: #6A6B6E; }
                 QListWidget { background-color: #4A4B4E; }
             """)
-        else:  # Blue-black theme
+        else:
             self.setStyleSheet("""
                 QWidget {
                     background-color: #1A1A2E;
@@ -320,8 +341,7 @@ class ImageClassifierApp(QMainWindow):
             """
             self.meta_label.setText(meta_text)
 
-            # Temporary history entry
-            self.temp_history_entry = f"{file_info.fileName()} - {time.strftime('%H:%M:%S')}"
+            self.temp_history_entry = f"{file_info.filePath()} - {time.strftime('%D %H:%M:%S')}"
             
             self.show_loading_popup()
             threading.Thread(
@@ -329,7 +349,6 @@ class ImageClassifierApp(QMainWindow):
                 args=(file_path, self.model_combo.currentText()),
                 daemon=True
             ).start()
-            
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to process image: {str(e)}")
@@ -352,7 +371,6 @@ class ImageClassifierApp(QMainWindow):
         real_probability, fake_probability = evaluate_image(file_path, model_type)
         self.is_loading = False
         
-        # Update history with results
         result_text = (f"{self.temp_history_entry}\n"
                       f"Model: {model_type} | "
                       f"Real: {real_probability:.2f} | "
@@ -360,7 +378,35 @@ class ImageClassifierApp(QMainWindow):
         
         self.history_list.insertItem(0, QListWidgetItem(result_text))
         self.popup.set_result(real_probability, fake_probability)
-        
+
+    def toggle_history_visibility(self):
+        if self.right_panel.isVisible():
+            self.right_panel.hide()
+            self.toggle_history_btn.setText("▲ Show History")
+        else:
+            self.right_panel.show()
+            self.toggle_history_btn.setText("▼ Hide History")
+            self.main_layout.setStretch(0, 2)
+
+    def show_context_menu(self, pos):
+        item = self.history_list.itemAt(pos)
+        if item:
+            menu = QMenu(self)
+            delete_action = menu.addAction("Delete")
+            delete_action.triggered.connect(lambda: self.delete_history_item(item))
+            menu.exec_(self.history_list.mapToGlobal(pos))
+
+    def delete_history_item(self, item):
+        row = self.history_list.row(item)
+        self.history_list.takeItem(row)
+
+    def re_evaluate_image(self, item):
+        first_line = item.text().split('\n')[0]
+        file_path = first_line.split(' - ')[0]
+        if os.path.exists(file_path):
+            self.process_image(file_path)
+        else:
+            QMessageBox.warning(self, "Error", "The image file no longer exists.")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

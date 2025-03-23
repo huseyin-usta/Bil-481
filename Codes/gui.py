@@ -7,15 +7,15 @@ from PyQt5.QtWidgets import (
     QMessageBox, QVBoxLayout, QWidget, QDialog, QHBoxLayout,
     QListWidget, QListWidgetItem, QShortcut, QComboBox, QSizePolicy
 )
-from PyQt5.QtGui import QPixmap, QFont, QKeySequence, QColor, QLinearGradient, QPainter, QIcon
+from PyQt5.QtGui import QPixmap, QFont, QKeySequence, QColor, QLinearGradient, QPainter, QIcon, QMovie
 from PyQt5.QtCore import Qt, QTimer, QFileInfo, QPoint, QSize
 
 def evaluate_image(image_path, model_type):
     time.sleep(15)
     if model_type == "Large Model":
         return predict.predict_large(image_path)
-    elif model_type == "Medium Model":
-        return predict.predict_medium(image_path)
+    elif model_type == "Mobile Model":
+        return predict.predict_mobile(image_path)
     else:  # Small Model
         return predict.predict(image_path)
 
@@ -32,6 +32,7 @@ class ResultPopup(QDialog):
         self.layout.setContentsMargins(20, 20, 20, 20)
         self.layout.setSpacing(15)
         
+        # Title
         self.title_label = QLabel("Analysis Result", self)
         self.title_label.setAlignment(Qt.AlignCenter)
         self.title_label.setStyleSheet("""
@@ -43,6 +44,15 @@ class ResultPopup(QDialog):
         """)
         self.layout.addWidget(self.title_label)
 
+        # Loading Animation
+        self.animation_label = QLabel(self)
+        self.movie = QMovie("animation.gif")
+        self.animation_label.setMovie(self.movie)
+        self.animation_label.setAlignment(Qt.AlignCenter)
+        self.animation_label.setStyleSheet("background: transparent;")
+        self.layout.addWidget(self.animation_label)
+
+        # Result Content
         self.result_content = QWidget()
         self.result_content.setStyleSheet("background: transparent;")
         result_layout = QVBoxLayout(self.result_content)
@@ -64,7 +74,9 @@ class ResultPopup(QDialog):
         result_layout.addWidget(self.real_label, 0, Qt.AlignCenter)
         result_layout.addWidget(self.fake_label, 0, Qt.AlignCenter)
         self.layout.addWidget(self.result_content)
+        self.result_content.hide()
 
+        # Close Button
         self.close_button = QPushButton("Close", self)
         self.close_button.setFixedSize(120, 40)
         self.close_button.setStyleSheet("""
@@ -83,10 +95,19 @@ class ResultPopup(QDialog):
         self.layout.addWidget(self.close_button, 0, Qt.AlignCenter)
         self.close_button.hide()
 
+    def start_animation(self):
+        self.movie.start()
+        self.animation_label.show()
+        self.result_content.hide()
+        self.close_button.hide()
+
     def set_result(self, real_probability, fake_probability):
+        QTimer.singleShot(0, lambda: self.movie.stop())
+        self.animation_label.hide()
         self.title_label.setText("Result:")
         self.real_label.setText(f"Real: {real_probability:.2f}%")
         self.fake_label.setText(f"Fake: {fake_probability:.2f}%")
+        self.result_content.show()
         self.close_button.show()
 
     def reset_results(self):
@@ -108,6 +129,7 @@ class ResultPopup(QDialog):
 class ImageClassifierApp(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.setWindowIcon(QIcon('logo1.png'))
         self.setWindowTitle("Image Real/Fake Classifier")
         self.setGeometry(100, 100, 1200, 800)
         self.current_theme = "dark"
@@ -127,7 +149,7 @@ class ImageClassifierApp(QMainWindow):
 
         # Model Selection
         self.model_combo = QComboBox()
-        self.model_combo.addItems(["Small Model", "Large Model", "Medium Model"])
+        self.model_combo.addItems(["Small Model", "Large Model", "Mobile Model"])
         self.model_combo.setStyleSheet("""
             QComboBox {
                 font: 16px Arial;
@@ -156,7 +178,7 @@ class ImageClassifierApp(QMainWindow):
 
         # Metadata
         self.meta_label = QLabel("", self)
-        self.meta_label.setStyleSheet("color: inherit; font: 12px Arial;")
+        self.meta_label.setStyleSheet("color: rgb(255, 255, 255); font: 12px Arial;")
         self.meta_label.setAlignment(Qt.AlignCenter)
         left_layout.addWidget(self.meta_label)
 
@@ -257,7 +279,7 @@ class ImageClassifierApp(QMainWindow):
         self.set_theme("blue" if self.current_theme == "dark" else "dark")
 
     def add_image_text(self):
-        self.canvas.setText("Drag & drop your image here\nor use the load button below")
+        self.canvas.setText("Drag/upload image")
         self.canvas.setFont(QFont("Arial", 24))
         self.canvas.setStyleSheet("color: rgba(255, 255, 255, 128);")
 
@@ -307,6 +329,7 @@ class ImageClassifierApp(QMainWindow):
                 args=(file_path, self.model_combo.currentText()),
                 daemon=True
             ).start()
+            
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to process image: {str(e)}")
@@ -314,7 +337,7 @@ class ImageClassifierApp(QMainWindow):
     def show_loading_popup(self):
         self.is_loading = True
         self.loading_phase = 0
-        self.popup.close_button.hide()
+        self.popup.start_animation()
         self.popup.show()
         self.animate_loading()
 
@@ -323,7 +346,7 @@ class ImageClassifierApp(QMainWindow):
             phases = ["Loading...", "Evaluating...", "Deciding..."]
             self.popup.title_label.setText(phases[self.loading_phase])
             self.loading_phase = (self.loading_phase + 1) % 3
-            QTimer.singleShot(800, self.animate_loading)
+            QTimer.singleShot(9000, self.animate_loading)
 
     def evaluate_and_show_result(self, file_path, model_type):
         real_probability, fake_probability = evaluate_image(file_path, model_type)
@@ -332,11 +355,12 @@ class ImageClassifierApp(QMainWindow):
         # Update history with results
         result_text = (f"{self.temp_history_entry}\n"
                       f"Model: {model_type} | "
-                      f"Real: {real_probability:.2f}% | "
-                      f"Fake: {fake_probability:.2f}%")
+                      f"Real: {real_probability:.2f} | "
+                      f"Fake: {fake_probability:.2f}")
         
         self.history_list.insertItem(0, QListWidgetItem(result_text))
         self.popup.set_result(real_probability, fake_probability)
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

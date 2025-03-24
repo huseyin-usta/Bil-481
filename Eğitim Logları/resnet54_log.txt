@@ -1,0 +1,68 @@
+ResNet 54 Eğitim Logu:
+
+Epoch 1/30, Train Loss: 0.6902, Train Acc: 53.7031%, Val Loss: 0.6915, Val Acc: 44.7266%, Epoch Time: 129.72 seconds
+Best model saved as model_saves/resnet54/weights_at_1.pth!
+
+Epoch 2/30, Train Loss: 0.4801, Train Acc: 97.6562%, Val Loss: 0.7302, Val Acc: 51.3672%, Epoch Time: 131.22 seconds
+Best model saved as model_saves/resnet54/weights_at_2.pth!
+
+Epoch 3/30, Train Loss: 0.1284, Train Acc: 100.0000%, Val Loss: 1.0357, Val Acc: 50.5859%, Epoch Time: 128.34 seconds
+
+Epoch 4/30, Train Loss: 0.0281, Train Acc: 100.0000%, Val Loss: 1.2801, Val Acc: 53.3203%, Epoch Time: 130.18 seconds
+Best model saved as model_saves/resnet54/weights_at_4.pth!
+
+Epoch 5/30, Train Loss: 0.0105, Train Acc: 100.0000%, Val Loss: 1.6544, Val Acc: 52.3438%, Epoch Time: 128.67 seconds
+
+Epoch 6/30, Train Loss: 0.0052, Train Acc: 100.0000%, Val Loss: 2.2341, Val Acc: 49.4141%, Epoch Time: 129.89 seconds
+
+Epoch 7/30, Train Loss: 0.0032, Train Acc: 100.0000%, Val Loss: 2.9012, Val Acc: 46.6797%, Epoch Time: 130.73 seconds
+
+Epoch 8/30, Train Loss: 0.0020, Train Acc: 100.0000%, Val Loss: 3.0563, Val Acc: 49.8047%, Epoch Time: 127.95 seconds
+
+Epoch 9/30, Train Loss: 0.0010, Train Acc: 100.0000%, Val Loss: 3.3521, Val Acc: 46.4844%, Epoch Time: 128.93 seconds
+
+Epoch 10/30, Train Loss: 0.0007, Train Acc: 100.0000%, Val Loss: 3.3195, Val Acc: 50.1953%, Epoch Time: 130.45 seconds
+Best model saved as model_saves/resnet54/weights_at_10.pth!
+
+Epoch 11/30, Train Loss: 0.0005, Train Acc: 100.0000%, Val Loss: 3.4705, Val Acc: 49.8047%, Epoch Time: 129.37 seconds
+
+Epoch 12/30, Train Loss: 0.0005, Train Acc: 100.0000%, Val Loss: 3.4120, Val Acc: 50.5859%, Epoch Time: 128.72 seconds
+
+Epoch 13/30, Train Loss: 0.0003, Train Acc: 100.0000%, Val Loss: 3.4671, Val Acc: 49.2188%, Epoch Time: 130.68 seconds
+
+Epoch 14/30, Train Loss: 0.0003, Train Acc: 100.0000%, Val Loss: 3.5792, Val Acc: 51.5625%, Epoch Time: 131.42 seconds
+
+Epoch 15/30, Train Loss: 0.0003, Train Acc: 100.0000%, Val Loss: 4.1412, Val Acc: 48.6328%, Epoch Time: 127.86 seconds
+
+Epoch 16/30, Train Loss: 0.0003, Train Acc: 100.0000%, Val Loss: 4.4954, Val Acc: 48.4375%, Epoch Time: 129.42 seconds
+
+Epoch 17/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 4.7707, Val Acc: 51.5625%, Epoch Time: 131.15 seconds
+
+Epoch 18/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 5.3405, Val Acc: 48.8281%, Epoch Time: 128.92 seconds
+
+Epoch 19/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 5.1501, Val Acc: 52.3438%, Epoch Time: 129.88 seconds
+
+Epoch 20/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 5.1985, Val Acc: 51.1719%, Epoch Time: 130.58 seconds
+Best model saved as model_saves/resnet54/weights_at_20.pth!
+
+Epoch 21/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 5.2114, Val Acc: 50.5859%, Epoch Time: 129.67 seconds
+
+Epoch 22/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 5.2248, Val Acc: 50.7812%, Epoch Time: 130.12 seconds
+
+Epoch 23/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 5.3102, Val Acc: 50.5859%, Epoch Time: 127.78 seconds
+
+Epoch 24/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 5.4894, Val Acc: 49.6094%, Epoch Time: 128.94 seconds
+
+Epoch 25/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 5.6183, Val Acc: 50.1953%, Epoch Time: 130.46 seconds
+
+Epoch 26/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 5.7938, Val Acc: 49.0234%, Epoch Time: 131.06 seconds
+
+Epoch 27/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 5.9215, Val Acc: 50.7812%, Epoch Time: 129.12 seconds
+
+Epoch 28/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 6.0811, Val Acc: 49.4141%, Epoch Time: 128.64 seconds
+
+Epoch 29/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 6.2447, Val Acc: 50.7812%, Epoch Time: 130.28 seconds
+
+Epoch 30/30, Train Loss: 0.0002, Train Acc: 100.0000%, Val Loss: 6.4712, Val Acc: 49.4141%, Epoch Time: 129.88 seconds
+
+Not: Model overfit olduğu için dış dünya testi yapılmadı.

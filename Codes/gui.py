@@ -7,21 +7,15 @@ import predict
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QLabel, QPushButton, QFileDialog,
     QMessageBox, QVBoxLayout, QWidget, QDialog, QHBoxLayout,
-    QListWidget, QListWidgetItem, QShortcut, QComboBox, QMenu
+    QListWidget, QListWidgetItem, QShortcut, QMenu
 )
 from PyQt5.QtGui import QPixmap, QFont, QKeySequence, QColor, QLinearGradient, QPainter, QIcon, QMovie
 from PyQt5.QtCore import Qt, QTimer, QFileInfo, QPoint
-from train import train_model
 import fine_tune
 
-def evaluate_image(image_path, model_type):
-    time.sleep(15)
-    if model_type == "Large Model":
-        return predict.predict_large(image_path)
-    elif model_type == "Medium Model":
-        return predict.predict_medium(image_path)
-    else:  # Small Model
-        return predict.predict(image_path)
+def evaluate_image(image_path):
+    time.sleep(24)  # Simüle edilmiş işlem süresi
+    return predict.predict(image_path)
 
 class ResultPopup(QDialog):
     def __init__(self, parent=None):
@@ -174,26 +168,19 @@ class ImageClassifierApp(QMainWindow):
         self.fine_tune_btn.clicked.connect(self.open_fine_tune_file)
         left_layout.addWidget(self.fine_tune_btn, alignment=Qt.AlignCenter)
 
-        self.model_combo = QComboBox()
-        self.model_combo.addItems(["Small Model", "Large Model", "Medium Model"])
-        self.model_combo.setStyleSheet("""
-            QComboBox {
-                font: 16px Arial;
-                padding: 8px 12px;
-                border-radius: 15px;
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 #2196F3, stop:1 #E91E63);
-                color: white;
-                border: 2px solid #FFFFFF;
-            }
-            QComboBox::drop-down {
-                subcontrol-origin: padding;
-                subcontrol-position: top right;
-                width: 24px;
-                border-left: 2px solid rgba(255, 255, 255, 100);
+        # Fine-tune tarih etiketi
+        self.finetune_date_label = QLabel("Last Fine-tune: Never", self)
+        self.finetune_date_label.setAlignment(Qt.AlignCenter)
+        self.finetune_date_label.setStyleSheet("""
+            QLabel {
+                color: #FFFFFF;
+                font: italic 12px Arial;
+                margin-top: -5px;
+                margin-bottom: 15px;
             }
         """)
-        left_layout.addWidget(self.model_combo, alignment=Qt.AlignCenter)
+        left_layout.addWidget(self.finetune_date_label)
+        self.load_last_finetune_date()
 
         self.canvas = QLabel(self)
         self.canvas.setAlignment(Qt.AlignCenter)
@@ -294,6 +281,7 @@ class ImageClassifierApp(QMainWindow):
         
         right_container.layout().addWidget(self.right_panel)
 
+        QShortcut(QKeySequence("Ctrl+O"), self).activated.connect(self.load_image)
         self.setAcceptDrops(True)
         self.is_loading = False
         self.loading_phase = 0
@@ -327,6 +315,31 @@ class ImageClassifierApp(QMainWindow):
     def toggle_theme(self):
         self.set_theme("blue" if self.current_theme == "dark" else "dark")
 
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            for url in event.mimeData().urls():
+                file_path = url.toLocalFile()
+                if self.is_valid_file(file_path):
+                    event.acceptProposedAction()
+                    return
+            event.ignore()
+
+    def dropEvent(self, event):
+        for url in event.mimeData().urls():
+            file_path = url.toLocalFile()
+            if file_path.lower().endswith('.csv'):
+                self.fineTune(file_path)
+                return
+            elif self.is_image_file(file_path):
+                self.process_image(file_path)
+                return
+
+    def is_valid_file(self, file_path):
+        return self.is_image_file(file_path) or file_path.lower().endswith('.csv')
+
+    def is_image_file(self, file_path):
+        return file_path.lower().endswith(('.png', '.jpg', '.jpeg'))
+
     def add_image_text(self):
         self.canvas.setText("Drag/upload image")
         self.canvas.setFont(QFont("Arial", 24))
@@ -338,17 +351,6 @@ class ImageClassifierApp(QMainWindow):
         )
         if file_path:
             self.process_image(file_path)
-
-    def dragEnterEvent(self, event):
-        if event.mimeData().hasUrls():
-            event.acceptProposedAction()
-
-    def dropEvent(self, event):
-        for url in event.mimeData().urls():
-            file_path = url.toLocalFile()
-            if file_path.lower().endswith(('.png', '.jpg', '.jpeg')):
-                self.process_image(file_path)
-                break
 
     def process_image(self, file_path):
         try:
@@ -374,7 +376,7 @@ class ImageClassifierApp(QMainWindow):
             self.show_loading_popup()
             threading.Thread(
                 target=self.evaluate_and_show_result,
-                args=(file_path, self.model_combo.currentText()),
+                args=(file_path,),
                 daemon=True
             ).start()
 
@@ -395,18 +397,20 @@ class ImageClassifierApp(QMainWindow):
             self.loading_phase = (self.loading_phase + 1) % 3
             QTimer.singleShot(9000, self.animate_loading)
 
-    def evaluate_and_show_result(self, file_path, model_type):
-        real_probability, fake_probability = evaluate_image(file_path, model_type)
-        self.is_loading = False
-        
-        result_text = (f"{self.temp_history_entry}\n"
-                      f"Model: {model_type} | "
-                      f"Real: {real_probability:.2f} | "
-                      f"Fake: {fake_probability:.2f}")
-        
-        self.history_list.insertItem(0, QListWidgetItem(result_text))
-        self.popup.set_result(real_probability, fake_probability)
-        self.save_history()
+    def evaluate_and_show_result(self, file_path):
+        try:
+            real_probability, fake_probability = evaluate_image(file_path)
+            self.is_loading = False
+            
+            result_text = (f"{self.temp_history_entry}\n"
+                          f"Real: {real_probability:.2f} | "
+                          f"Fake: {fake_probability:.2f}")
+            
+            self.history_list.insertItem(0, QListWidgetItem(result_text))
+            self.popup.set_result(real_probability, fake_probability)
+            self.save_history()
+        except Exception as e:
+            QMessageBox.critical(self, "Evaluation Error", str(e))
 
     def toggle_history_visibility(self):
         if self.right_panel.isVisible():
@@ -449,8 +453,35 @@ class ImageClassifierApp(QMainWindow):
             self.fineTune(file_path)
 
     def fineTune(self, csv_path):
-        print(f"Fine tuning initiated with: {csv_path}")
-        fine_tune.fine_tune(csv_path)
+        try:
+            print(f"Fine tuning initiated with: {csv_path}")
+            fine_tune.fine_tune(csv_path)
+            self.update_finetune_date()
+            QMessageBox.information(self, "Success", "Model successfully fine-tuned!")
+        except Exception as e:
+            QMessageBox.critical(self, "Fine-tuning Error", f"Failed to fine-tune model: {str(e)}")
+
+    def update_finetune_date(self):
+        current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+        self.finetune_date_label.setText(f"Last Fine-tune: {current_time}")
+        self.save_last_finetune_date(current_time)
+
+    def save_last_finetune_date(self, date_str):
+        try:
+            with open("last_finetune.dat", "w") as f:
+                f.write(date_str)
+        except Exception as e:
+            print(f"Date save error: {str(e)}")
+
+    def load_last_finetune_date(self):
+        try:
+            if os.path.exists("last_finetune.dat"):
+                with open("last_finetune.dat", "r") as f:
+                    date_str = f.read()
+                    self.finetune_date_label.setText(f"Last Fine-tune: {date_str}")
+        except Exception as e:
+            print(f"Date load error: {str(e)}")
+
     def load_history(self):
         try:
             if os.path.exists(self.history_file):

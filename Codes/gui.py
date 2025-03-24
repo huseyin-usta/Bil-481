@@ -2,6 +2,7 @@ import sys
 import threading
 import time
 import os
+import json
 import predict
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QLabel, QPushButton, QFileDialog,
@@ -10,13 +11,15 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QPixmap, QFont, QKeySequence, QColor, QLinearGradient, QPainter, QIcon, QMovie
 from PyQt5.QtCore import Qt, QTimer, QFileInfo, QPoint
+from train import train_model
+import fine_tune
 
 def evaluate_image(image_path, model_type):
     time.sleep(15)
     if model_type == "Large Model":
         return predict.predict_large(image_path)
-    elif model_type == "Middle Model":
-        return predict.predict_middle(image_path)
+    elif model_type == "Medium Model":
+        return predict.predict_medium(image_path)
     else:  # Small Model
         return predict.predict(image_path)
 
@@ -24,7 +27,7 @@ class ResultPopup(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Result")
-        self.setFixedSize(500, 300)
+        self.setFixedSize(500, 400)
         self.setStyleSheet(parent.styleSheet())
         self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
@@ -43,6 +46,13 @@ class ResultPopup(QDialog):
             }
         """)
         self.layout.addWidget(self.title_label)
+
+        self.loading_image_label = QLabel(self)
+        self.loading_pixmap = QPixmap("loading_image.png").scaled(450, 450, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.loading_image_label.setPixmap(self.loading_pixmap)
+        self.loading_image_label.setAlignment(Qt.AlignCenter)
+        self.loading_image_label.setStyleSheet("background: transparent;")
+        self.layout.addWidget(self.loading_image_label)
 
         self.animation_label = QLabel(self)
         self.movie = QMovie("animation.gif")
@@ -95,12 +105,14 @@ class ResultPopup(QDialog):
     def start_animation(self):
         self.movie.start()
         self.animation_label.show()
+        self.loading_image_label.show()
         self.result_content.hide()
         self.close_button.hide()
 
     def set_result(self, real_probability, fake_probability):
         QTimer.singleShot(0, lambda: self.movie.stop())
         self.animation_label.hide()
+        self.loading_image_label.hide()
         self.title_label.setText("Result:")
         self.real_label.setText(f"Real: {real_probability:.2f}%")
         self.fake_label.setText(f"Fake: {fake_probability:.2f}%")
@@ -131,6 +143,7 @@ class ImageClassifierApp(QMainWindow):
         self.setGeometry(100, 100, 1200, 800)
         self.current_theme = "dark"
         self.popup = ResultPopup(self)
+        self.history_file = "history.json"
         self.set_theme()
         self.history = []
         
@@ -143,8 +156,26 @@ class ImageClassifierApp(QMainWindow):
         left_layout = QVBoxLayout(left_panel)
         self.main_layout.addWidget(left_panel, stretch=2)
 
+        self.fine_tune_btn = QPushButton("🔧 Fine Tune", self)
+        self.fine_tune_btn.setStyleSheet("""
+            QPushButton {
+                font: bold 16px Arial;
+                padding: 12px 24px;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #4CAF50, stop:1 #8BC34A);
+                color: white;
+                border-radius: 20px;
+                border: 2px solid #FFFFFF;
+                margin-bottom: 10px;
+            }
+            QPushButton:hover { background-color: #45a049; }
+            QPushButton:pressed { background-color: #357a38; }
+        """)
+        self.fine_tune_btn.clicked.connect(self.open_fine_tune_file)
+        left_layout.addWidget(self.fine_tune_btn, alignment=Qt.AlignCenter)
+
         self.model_combo = QComboBox()
-        self.model_combo.addItems(["Small Model", "Large Model", "Middle Model"])
+        self.model_combo.addItems(["Small Model", "Large Model", "Medium Model"])
         self.model_combo.setStyleSheet("""
             QComboBox {
                 font: 16px Arial;
@@ -214,13 +245,11 @@ class ImageClassifierApp(QMainWindow):
         
         left_layout.addWidget(bottom_left)
 
-        # Right Section
         right_container = QWidget()
         right_container.setLayout(QVBoxLayout())
         right_container.layout().setContentsMargins(0, 0, 0, 0)
         self.main_layout.addWidget(right_container, stretch=1)
 
-        # Toggle Button
         self.toggle_history_btn = QPushButton("▼ Hide History", self)
         self.toggle_history_btn.setStyleSheet("""
             QPushButton {
@@ -238,7 +267,6 @@ class ImageClassifierApp(QMainWindow):
         self.toggle_history_btn.clicked.connect(self.toggle_history_visibility)
         right_container.layout().addWidget(self.toggle_history_btn, 0, Qt.AlignCenter)
 
-        # History Panel
         self.right_panel = QWidget()
         self.right_panel.setVisible(True)
         right_layout = QVBoxLayout(self.right_panel)
@@ -247,7 +275,7 @@ class ImageClassifierApp(QMainWindow):
         self.history_list = QListWidget()
         self.history_list.setStyleSheet("""
             QListWidget {
-                background-color: #FFFFFF;
+                background-color: rgba(255,255,255,64);
                 color: #333333;
                 border-radius: 10px;
                 padding: 10px;
@@ -266,10 +294,10 @@ class ImageClassifierApp(QMainWindow):
         
         right_container.layout().addWidget(self.right_panel)
 
-        QShortcut(QKeySequence("Ctrl+O"), self).activated.connect(self.load_image)
         self.setAcceptDrops(True)
         self.is_loading = False
         self.loading_phase = 0
+        self.load_history()
 
     def set_theme(self, theme=None):
         theme = theme or self.current_theme
@@ -378,6 +406,7 @@ class ImageClassifierApp(QMainWindow):
         
         self.history_list.insertItem(0, QListWidgetItem(result_text))
         self.popup.set_result(real_probability, fake_probability)
+        self.save_history()
 
     def toggle_history_visibility(self):
         if self.right_panel.isVisible():
@@ -399,6 +428,7 @@ class ImageClassifierApp(QMainWindow):
     def delete_history_item(self, item):
         row = self.history_list.row(item)
         self.history_list.takeItem(row)
+        self.save_history()
 
     def re_evaluate_image(self, item):
         first_line = item.text().split('\n')[0]
@@ -407,6 +437,46 @@ class ImageClassifierApp(QMainWindow):
             self.process_image(file_path)
         else:
             QMessageBox.warning(self, "Error", "The image file no longer exists.")
+
+    def open_fine_tune_file(self):
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, 
+            "Select CSV File for Fine Tuning",
+            "",
+            "CSV Files (*.csv)"
+        )
+        if file_path:
+            self.fineTune(file_path)
+
+    def fineTune(self, csv_path):
+        print(f"Fine tuning initiated with: {csv_path}")
+        fine_tune.fine_tune(csv_path)
+    def load_history(self):
+        try:
+            if os.path.exists(self.history_file):
+                with open(self.history_file, 'r') as f:
+                    history_data = json.load(f)
+                    for entry in history_data:
+                        item = QListWidgetItem(entry)
+                        self.history_list.addItem(item)
+        except Exception as e:
+            QMessageBox.warning(self, "History Error", f"Failed to load history: {str(e)}")
+
+    def save_history(self):
+        try:
+            history_data = []
+            for i in range(self.history_list.count()):
+                item = self.history_list.item(i)
+                history_data.append(item.text())
+            
+            with open(self.history_file, 'w') as f:
+                json.dump(history_data, f)
+        except Exception as e:
+            QMessageBox.warning(self, "History Error", f"Failed to save history: {str(e)}")
+
+    def closeEvent(self, event):
+        self.save_history()
+        super().closeEvent(event)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -31,4 +31,4 @@ Epoch 14/15, Train Loss: 2.8637, Train Acc: 0.5712, Val Loss: 0.6932, Val Acc: 0
                                                                                      
 Epoch 15/15, Train Loss: 3.4081, Train Acc: 0.5507, Val Loss: 0.6932, Val Acc: 0.5007, Epoch Time: 716.93 seconds
 
-
+Dış dünya data set başarımı(accuracy): %66.44

@@ -105,3 +105,5 @@ Epoch 39/40 - Time: 362.82s - Train Loss: 0.0663 - Train Acc: 0.9751 - Val Loss:
                                                                           
 Epoch 40/40 - Time: 360.77s - Train Loss: 0.0673 - Train Acc: 0.9741 - Val Loss: 0.0604 - Val Acc: 0.9800
 model saved as model_saves/convnext/weights_at_40.pth!
+
+Dış dünya data set başarımı(accuracy): %69.34

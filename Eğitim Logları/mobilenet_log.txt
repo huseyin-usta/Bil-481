@@ -1,0 +1,73 @@
+MobileNet Eğitim Logu:
+
+Epoch 1/25 - Time: 90.22s - Train Loss: 0.2846 - Train Acc: 0.8776 - Val Loss: 0.1717 - Val Acc: 0.9340  
+model saved as model_saves/mobilenet/weights_at_1.pth!  
+
+Epoch 2/25 - Time: 90.19s - Train Loss: 0.2806 - Train Acc: 0.8784 - Val Loss: 0.1657 - Val Acc: 0.9349  
+model saved as model_saves/mobilenet/weights_at_2.pth!  
+
+Epoch 3/25 - Time: 90.38s - Train Loss: 0.2758 - Train Acc: 0.8808 - Val Loss: 0.1576 - Val Acc: 0.9393  
+model saved as model_saves/mobilenet/weights_at_3.pth!  
+
+Epoch 4/25 - Time: 90.23s - Train Loss: 0.2667 - Train Acc: 0.8870 - Val Loss: 0.1587 - Val Acc: 0.9377  
+
+Epoch 5/25 - Time: 90.41s - Train Loss: 0.2662 - Train Acc: 0.8867 - Val Loss: 0.1489 - Val Acc: 0.9421  
+model saved as model_saves/mobilenet/weights_at_5.pth!  
+
+Epoch 6/25 - Time: 90.54s - Train Loss: 0.2597 - Train Acc: 0.8891 - Val Loss: 0.1516 - Val Acc: 0.9391  
+model saved as model_saves/mobilenet/weights_at_6.pth!  
+
+Epoch 7/25 - Time: 90.46s - Train Loss: 0.2573 - Train Acc: 0.8902 - Val Loss: 0.1483 - Val Acc: 0.9416  
+model saved as model_saves/mobilenet/weights_at_7.pth!  
+
+Epoch 8/25 - Time: 90.54s - Train Loss: 0.2527 - Train Acc: 0.8918 - Val Loss: 0.1478 - Val Acc: 0.9410  
+
+Epoch 9/25 - Time: 91.42s - Train Loss: 0.2539 - Train Acc: 0.8921 - Val Loss: 0.1411 - Val Acc: 0.9452  
+model saved as model_saves/mobilenet/weights_at_9.pth!  
+
+Epoch 10/25 - Time: 90.58s - Train Loss: 0.2488 - Train Acc: 0.8941 - Val Loss: 0.1417 - Val Acc: 0.9440  
+
+Epoch 11/25 - Time: 90.36s - Train Loss: 0.2519 - Train Acc: 0.8910 - Val Loss: 0.1372 - Val Acc: 0.9455  
+model saved as model_saves/mobilenet/weights_at_11.pth!  
+
+Epoch 12/25 - Time: 90.36s - Train Loss: 0.2445 - Train Acc: 0.8951 - Val Loss: 0.1387 - Val Acc: 0.9447  
+
+Epoch 13/25 - Time: 90.38s - Train Loss: 0.2442 - Train Acc: 0.8971 - Val Loss: 0.1374 - Val Acc: 0.9460  
+model saved as model_saves/mobilenet/weights_at_13.pth!  
+
+Epoch 14/25 - Time: 90.29s - Train Loss: 0.2446 - Train Acc: 0.8957 - Val Loss: 0.1386 - Val Acc: 0.9462  
+model saved as model_saves/mobilenet/weights_at_14.pth!  
+
+Epoch 15/25 - Time: 90.48s - Train Loss: 0.2398 - Train Acc: 0.8972 - Val Loss: 0.1309 - Val Acc: 0.9488  
+model saved as model_saves/mobilenet/weights_at_15.pth!  
+Model unfrozen at epoch 16!  
+
+Epoch 16/25 - Time: 174.08s - Train Loss: 0.1974 - Train Acc: 0.9178 - Val Loss: 0.0863 - Val Acc: 0.9669  
+model saved as model_saves/mobilenet/weights_at_16.pth!  
+
+Epoch 17/25 - Time: 174.45s - Train Loss: 0.1568 - Train Acc: 0.9369 - Val Loss: 0.0601 - Val Acc: 0.9788  
+model saved as model_saves/mobilenet/weights_at_17.pth!  
+
+Epoch 18/25 - Time: 173.89s - Train Loss: 0.1320 - Train Acc: 0.9478 - Val Loss: 0.0578 - Val Acc: 0.9780  
+
+Epoch 19/25 - Time: 174.26s - Train Loss: 0.1217 - Train Acc: 0.9521 - Val Loss: 0.0464 - Val Acc: 0.9822  
+model saved as model_saves/mobilenet/weights_at_19.pth!  
+
+Epoch 20/25 - Time: 173.99s - Train Loss: 0.1112 - Train Acc: 0.9570 - Val Loss: 0.0442 - Val Acc: 0.9828  
+model saved as model_saves/mobilenet/weights_at_20.pth!  
+
+Epoch 21/25 - Time: 174.38s - Train Loss: 0.1052 - Train Acc: 0.9589 - Val Loss: 0.0425 - Val Acc: 0.9832  
+model saved as model_saves/mobilenet/weights_at_21.pth!  
+
+Epoch 22/25 - Time: 168.64s - Train Loss: 0.0999 - Train Acc: 0.9618 - Val Loss: 0.0421 - Val Acc: 0.9841  
+model saved as model_saves/mobilenet/weights_at_22.pth!  
+
+Epoch 23/25 - Time: 112.71s - Train Loss: 0.0952 - Train Acc: 0.9627 - Val Loss: 0.0448 - Val Acc: 0.9821  
+
+Epoch 24/25 - Time: 173.22s - Train Loss: 0.0903 - Train Acc: 0.9653 - Val Loss: 0.0336 - Val Acc: 0.9872  
+model saved as model_saves/mobilenet/weights_at_24.pth!  
+
+Epoch 25/25 - Time: 173.89s - Train Loss: 0.0838 - Train Acc: 0.9677 - Val Loss: 0.0315 - Val Acc: 0.9879  
+model saved as model_saves/mobilenet/weights_at_25.pth!
+
+Dış dünya data set başarımı(accuracy): %70.08

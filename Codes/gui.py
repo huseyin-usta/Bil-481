@@ -12,11 +12,16 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QPixmap, QFont, QKeySequence, QColor, QLinearGradient, QPainter, QIcon, QMovie
 from PyQt5.QtCore import Qt, QTimer, QFileInfo, QPoint
 import fine_tune
+import warnings
 
+warnings.filterwarnings("ignore")
+
+# Resmi değerlendiren fonksiyon
 def evaluate_image(image_path):
-    time.sleep(24)  # Simüle edilmiş işlem süresi
+    time.sleep(24)
     return predict.predict(image_path)
 
+# Sonuçları gösteren popup pencere sınıfı
 class ResultPopup(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -26,10 +31,12 @@ class ResultPopup(QDialog):
         self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
 
+        # Layout ve bileşenlerin oluşturulması
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(20, 20, 20, 20)
         self.layout.setSpacing(15)
         
+        # Başlık etiketi
         self.title_label = QLabel("Analysis Result", self)
         self.title_label.setAlignment(Qt.AlignCenter)
         self.title_label.setStyleSheet("""
@@ -41,13 +48,18 @@ class ResultPopup(QDialog):
         """)
         self.layout.addWidget(self.title_label)
 
+        # Yükleniyor görseli için bileşenler
         self.loading_image_label = QLabel(self)
         self.loading_pixmap = QPixmap("loading_image.png").scaled(450, 450, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.loading_image_label.setPixmap(self.loading_pixmap)
         self.loading_image_label.setAlignment(Qt.AlignCenter)
         self.loading_image_label.setStyleSheet("background: transparent;")
         self.layout.addWidget(self.loading_image_label)
-
+        self.loading_images = [f"CNN-{i}.png" for i in range(1, 9)]
+        self.current_image_index = 0
+        self.image_timer = QTimer()
+        
+        # GIF animasyonu için bileşenler
         self.animation_label = QLabel(self)
         self.movie = QMovie("animation.gif")
         self.animation_label.setMovie(self.movie)
@@ -55,11 +67,13 @@ class ResultPopup(QDialog):
         self.animation_label.setStyleSheet("background: transparent;")
         self.layout.addWidget(self.animation_label)
 
+        # Sonuç gösterim alanı
         self.result_content = QWidget()
         self.result_content.setStyleSheet("background: transparent;")
         result_layout = QVBoxLayout(self.result_content)
         result_layout.setSpacing(20)
         
+        # Gerçek ve sahte sonuç etiketleri
         self.real_label = QLabel("Real:", self)
         self.real_label.setStyleSheet("""
             font: 20px Arial; 
@@ -78,6 +92,7 @@ class ResultPopup(QDialog):
         self.layout.addWidget(self.result_content)
         self.result_content.hide()
 
+        # Kapatma butonu
         self.close_button = QPushButton("Close", self)
         self.close_button.setFixedSize(120, 40)
         self.close_button.setStyleSheet("""
@@ -97,13 +112,34 @@ class ResultPopup(QDialog):
         self.close_button.hide()
 
     def start_animation(self):
+        """Animasyon ve görsel değişim timer'ını başlatır"""
         self.movie.start()
+        self.image_timer.timeout.connect(self.update_loading_image)
+        self.image_timer.start(3000)
+        self.update_loading_image()
         self.animation_label.show()
         self.loading_image_label.show()
         self.result_content.hide()
         self.close_button.hide()
 
+    def update_loading_image(self):
+        """Yükleniyor görsellerini döngüsel olarak günceller"""
+        try:
+            pixmap = QPixmap(self.loading_images[self.current_image_index])
+            pixmap = pixmap.scaled(450, 450, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            self.loading_image_label.setPixmap(pixmap)
+            self.current_image_index = (self.current_image_index + 1) % 8
+            self.loading_image_label.show()
+        except Exception as e:
+            print(f"Image loading error: {str(e)}")
+
     def set_result(self, real_probability, fake_probability):
+        """Sonuçları görüntülemek için bileşenleri ayarlar"""
+        try:
+            self.image_timer.timeout.disconnect()
+        except TypeError:
+            pass
+        QTimer.singleShot(0, lambda: self.image_timer.stop())
         QTimer.singleShot(0, lambda: self.movie.stop())
         self.animation_label.hide()
         self.loading_image_label.hide()
@@ -112,6 +148,7 @@ class ResultPopup(QDialog):
         self.fake_label.setText(f"Fake: {fake_probability:.2f}%")
         self.result_content.show()
         self.close_button.show()
+        self.current_image_index = 0
 
     def reset_results(self):
         self.title_label.setText("Analysis Result")
@@ -120,6 +157,7 @@ class ResultPopup(QDialog):
         self.close_button.hide()
 
     def paintEvent(self, event):
+        """Özel gradient arkaplan çizimi"""
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
         gradient = QLinearGradient(QPoint(0, 0), QPoint(self.width(), self.height()))
@@ -129,8 +167,10 @@ class ResultPopup(QDialog):
         painter.setPen(Qt.NoPen)
         painter.drawRoundedRect(self.rect(), 15, 15)
 
+# Ana uygulama penceresi sınıfı
 class ImageClassifierApp(QMainWindow):
     def __init__(self):
+        # Temel pencere ayarları
         super().__init__()
         self.setWindowIcon(QIcon('logo1.png'))
         self.setWindowTitle("Image Real/Fake Classifier")
@@ -141,15 +181,17 @@ class ImageClassifierApp(QMainWindow):
         self.set_theme()
         self.history = []
         
+        # Merkez widget ve layout
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
         self.main_layout = QHBoxLayout(self.central_widget)
 
-        # Left Panel
+        # Sol panel bileşenleri
         left_panel = QWidget()
         left_layout = QVBoxLayout(left_panel)
         self.main_layout.addWidget(left_panel, stretch=2)
 
+        # Fine tune butonu
         self.fine_tune_btn = QPushButton("🔧 Fine Tune", self)
         self.fine_tune_btn.setStyleSheet("""
             QPushButton {
@@ -168,7 +210,6 @@ class ImageClassifierApp(QMainWindow):
         self.fine_tune_btn.clicked.connect(self.open_fine_tune_file)
         left_layout.addWidget(self.fine_tune_btn, alignment=Qt.AlignCenter)
 
-        # Fine-tune tarih etiketi
         self.finetune_date_label = QLabel("Last Fine-tune: Never", self)
         self.finetune_date_label.setAlignment(Qt.AlignCenter)
         self.finetune_date_label.setStyleSheet("""
@@ -182,6 +223,26 @@ class ImageClassifierApp(QMainWindow):
         left_layout.addWidget(self.finetune_date_label)
         self.load_last_finetune_date()
 
+        # Model sıfırlama butonu
+        self.reset_model_btn = QPushButton("🔄 Reset Model", self)
+        self.reset_model_btn.setStyleSheet("""
+            QPushButton {
+                font: bold 16px Arial;
+                padding: 12px 24px;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #FF5722, stop:1 #E91E63);
+                color: white;
+                border-radius: 20px;
+                border: 2px solid #FFFFFF;
+                margin-bottom: 10px;
+            }
+            QPushButton:hover { background-color: #eb6143; }
+            QPushButton:pressed { background-color: #a23a24; }
+        """)
+        self.reset_model_btn.clicked.connect(self.confirm_reset_model)
+        left_layout.addWidget(self.reset_model_btn, alignment=Qt.AlignCenter)
+
+        # Resim gösterim alanı
         self.canvas = QLabel(self)
         self.canvas.setAlignment(Qt.AlignCenter)
         self.canvas.setFixedSize(700, 500)
@@ -232,6 +293,7 @@ class ImageClassifierApp(QMainWindow):
         
         left_layout.addWidget(bottom_left)
 
+        # Sağ panel (geçmiş listesi)
         right_container = QWidget()
         right_container.setLayout(QVBoxLayout())
         right_container.layout().setContentsMargins(0, 0, 0, 0)
@@ -281,13 +343,13 @@ class ImageClassifierApp(QMainWindow):
         
         right_container.layout().addWidget(self.right_panel)
 
-        QShortcut(QKeySequence("Ctrl+O"), self).activated.connect(self.load_image)
-        self.setAcceptDrops(True)
+        self.setAcceptDrops(True) # Sürükle-bırak desteği
         self.is_loading = False
         self.loading_phase = 0
-        self.load_history()
+        self.load_history() # Kayıtlı geçmişi yükle
 
     def set_theme(self, theme=None):
+        '''Temayı ayarlar'''
         theme = theme or self.current_theme
         self.current_theme = theme
         if theme == "dark":
@@ -313,6 +375,7 @@ class ImageClassifierApp(QMainWindow):
         self.popup.setStyleSheet(self.styleSheet())
 
     def toggle_theme(self):
+        '''Temayı değiştirir'''
         self.set_theme("blue" if self.current_theme == "dark" else "dark")
 
     def dragEnterEvent(self, event):
@@ -341,7 +404,7 @@ class ImageClassifierApp(QMainWindow):
         return file_path.lower().endswith(('.png', '.jpg', '.jpeg'))
 
     def add_image_text(self):
-        self.canvas.setText("Drag/upload image")
+        self.canvas.setText("Drag/upload image or .csv file")
         self.canvas.setFont(QFont("Arial", 24))
         self.canvas.setStyleSheet("color: rgba(255, 255, 255, 128);")
 
@@ -353,6 +416,7 @@ class ImageClassifierApp(QMainWindow):
             self.process_image(file_path)
 
     def process_image(self, file_path):
+        '''Resmi alıp gerekli işlemleri yapar'''
         try:
             pixmap = QPixmap(file_path)
             if pixmap.isNull():
@@ -384,6 +448,7 @@ class ImageClassifierApp(QMainWindow):
             QMessageBox.critical(self, "Error", f"Failed to process image: {str(e)}")
 
     def show_loading_popup(self):
+        '''Sonuçların verileceği popupı gösterir'''
         self.is_loading = True
         self.loading_phase = 0
         self.popup.start_animation()
@@ -391,6 +456,7 @@ class ImageClassifierApp(QMainWindow):
         self.animate_loading()
 
     def animate_loading(self):
+        '''Yükleme yazısını değiştirir'''
         if self.is_loading:
             phases = ["Loading...", "Evaluating...", "Deciding..."]
             self.popup.title_label.setText(phases[self.loading_phase])
@@ -398,6 +464,7 @@ class ImageClassifierApp(QMainWindow):
             QTimer.singleShot(9000, self.animate_loading)
 
     def evaluate_and_show_result(self, file_path):
+        '''Gerekli fonksiyonları çalıştırarak sonuçları belirler'''
         try:
             real_probability, fake_probability = evaluate_image(file_path)
             self.is_loading = False
@@ -413,6 +480,7 @@ class ImageClassifierApp(QMainWindow):
             QMessageBox.critical(self, "Evaluation Error", str(e))
 
     def toggle_history_visibility(self):
+        '''Geçmişi gizler/gösterir'''
         if self.right_panel.isVisible():
             self.right_panel.hide()
             self.toggle_history_btn.setText("▲ Show History")
@@ -422,6 +490,7 @@ class ImageClassifierApp(QMainWindow):
             self.main_layout.setStretch(0, 2)
 
     def show_context_menu(self, pos):
+        '''Geçmişten silme işlemi için delete butonu gösterir'''
         item = self.history_list.itemAt(pos)
         if item:
             menu = QMenu(self)
@@ -430,11 +499,13 @@ class ImageClassifierApp(QMainWindow):
             menu.exec_(self.history_list.mapToGlobal(pos))
 
     def delete_history_item(self, item):
+        '''Geçmişten siler'''
         row = self.history_list.row(item)
         self.history_list.takeItem(row)
         self.save_history()
 
     def re_evaluate_image(self, item):
+        '''Geçmişteki resmi tekrar işleme alır'''
         first_line = item.text().split('\n')[0]
         file_path = first_line.split(' - ')[0]
         if os.path.exists(file_path):
@@ -453,6 +524,7 @@ class ImageClassifierApp(QMainWindow):
             self.fineTune(file_path)
 
     def fineTune(self, csv_path):
+        '''Fine tune işlemini yapar'''
         try:
             print(f"Fine tuning initiated with: {csv_path}")
             fine_tune.fine_tune(csv_path)
@@ -467,6 +539,7 @@ class ImageClassifierApp(QMainWindow):
         self.save_last_finetune_date(current_time)
 
     def save_last_finetune_date(self, date_str):
+        '''En son fine tune yapılan zamanı kaydeder'''
         try:
             with open("last_finetune.dat", "w") as f:
                 f.write(date_str)
@@ -481,6 +554,49 @@ class ImageClassifierApp(QMainWindow):
                     self.finetune_date_label.setText(f"Last Fine-tune: {date_str}")
         except Exception as e:
             print(f"Date load error: {str(e)}")
+
+    def confirm_reset_model(self):
+        confirm = QMessageBox.question(
+            self,
+            "Confirm Reset",
+            "This will permanently delete the fine-tuned model and clear training history!\n"
+            "Are you sure you want to continue?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        if confirm == QMessageBox.Yes:
+            self.reset_model()
+
+    def reset_model(self):
+        '''Modeli resetler'''
+        try:
+            model_path = "fine_tuned_model.pth"
+            date_file = "last_finetune.dat"
+            changes_made = False
+
+            # Model dosyasını sil
+            if os.path.exists(model_path):
+                os.remove(model_path)
+                changes_made = True
+
+            # Tarih dosyasını sil
+            if os.path.exists(date_file):
+                os.remove(date_file)
+                changes_made = True
+
+            # UI güncellemeleri
+            self.finetune_date_label.setText("Last Fine-tune: Never")
+            
+            if changes_made:
+                QMessageBox.information(self, "Success", 
+                    "Model reset to default successfully!\n"
+                    "Fine-tune history cleared.")
+            else:
+                QMessageBox.information(self, "Info", 
+                    "No fine-tuned model or training history found.")
+
+        except Exception as e:
+            QMessageBox.critical(self, "Error", 
+                f"Failed to reset model: {str(e)}")
 
     def load_history(self):
         try:

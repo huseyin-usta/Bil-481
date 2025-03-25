@@ -22,10 +22,10 @@
 
 2. Katkıda Bulunanlar
 
-- Berk Kaftanoğlu – GUI Geliştirme ve Qt Designer
+- Berk KAFTANOĞLU – GUI Geliştirme ve Qt Designer
 - Mehmet Akif APAYDIN & Hüseyin Yiğit USTA – Derin Öğrenme Mühendisleri (PyTorch)
 - Mehmet Akif APAYDIN & Hüseyin Yiğit USTA – Veri Uzmanı (Veri Seti Hazırlığı)
-- Berk Kaftanoğlu – Entegrasyon & Test
+- Berk KAFTANOĞLU – Entegrasyon & Test
 
 3. Kalite Güvence Stratejisi
 

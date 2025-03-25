@@ -2,6 +2,8 @@
 
 Bu repo Bil 481 dersinin projesi için oluşturulmuştur, toplantı tutanakları, kod, açıklamalar, gereksinimler ve proje ile ilgili dosyalar bu repoda yer alacaktır.
 
+Projeyi çalıştırmadan önce linux ortamındaysanız requirements.sh dosyasını çalıştırmanız gerekmektedir, bu script gerekli kütüphaneleri indirecektir. Eğer başka bir işletim sistemi kullanıyorsanız scriptteki pip install ile başlayan satırları çalıştırmanız gerekmektedir.
+
 Not: Python notebookumuzu yüklemedik fakat eğer kodlarımızı çalıştırmak isterseniz yapmanız gerekenler çok basit!
 Bu kodu çalıştırmak için yapnamız gerekenler:
 1) Bir ipynb dosyası oluşturun.

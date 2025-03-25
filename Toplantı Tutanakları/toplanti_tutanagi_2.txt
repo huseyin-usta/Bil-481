@@ -10,4 +10,4 @@ Project Definition dokümanı gite yüklendi. - 11.25
 Proje planlaması kararlaştırıldı. - 11.50
 Proje plan dokümanı hazırlandı ve gite commit edildi. - 12.00
 
-Toplantı sonlandırıldı, Berk Kaftancıoğlu toplantıya katılmadı. - 12.00
+Toplantı sonlandırıldı, Berk KAFTANOĞLU toplantıya katılmadı. - 12.00

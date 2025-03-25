@@ -1,0 +1,17 @@
+Beşinci ekip toplantısı - 25 Mart 2025
+
+Toplantı tüm ekip üyelerinin katılımı ile başladı. - 12.45
+
+Testler hakkında konuşuldu. - 13.00
+
+Eğitim logları incelendi, ve efficientnet b5 modelinde karar kılındı. - 13.15
+
+PA3 incelendi. - 13.30
+
+PA3 için istenilen dokümanlar hazırlandı. - 14.10
+
+Testler gerçekleştirildi ve test raporları için gereken ekran görüntüleri vs. toparlandı. (Berk KAFTANOĞLU tarafından birleştirilecek) - 14.30
+
+Sunum için planlama yapıldı, sunumda nelerden bahsedileceği kararlaştırıldı. - 14.40
+
+Toplantı sona erdi. - 14.45

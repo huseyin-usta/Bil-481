@@ -33,7 +33,7 @@ Proje Organizasyonu.
     Mehmet Akif APAYDIN:
         Rol: Scrum Master.
         Görev: Modele eğitimi ve yeni fikirlerin implementasyonu, bu alandaki çalışmaların araştırılması.
-    Berk Kaftancıoğlu:
+    Berk KAFTANOĞLU:
         Rol: Designer.
         Görev: Kullanıcı arayüzünün tasarlanması ve yeni fikirlerin implementasyonu.
 

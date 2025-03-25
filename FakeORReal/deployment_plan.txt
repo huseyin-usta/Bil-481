@@ -1,0 +1,48 @@
+İçindekiler Tablosu
+1. Giriş  
+2. Katkıda Bulunanlar Listesi  
+3. Görev Matrisi  
+4. Deployment Overview  
+5. Deployment Process  
+6. Configuration Plan  
+7. Logs ve Outputs (Ekler)
+
+Katkıda Bulunanlar
+    Hüseyin Yiğit USTA – Takım Kaptanı, Model Eğitimi ve Araştırma  
+    Mehmet Akif APAYDIN – Scrum Master, Model Eğitimi & Veri Uzmanı  
+    Berk KAFTANOĞLU – GUI Tasarımı & Entegrasyon
+
+Görev Matrisi
+
+| Görev                                    | Hüseyin Yiğit USTA | Mehmet Akif APAYDIN | Berk KAFTANOĞLU |
+|------------------------------------------|:------------------:|:-------------------:|:---------------:|
+| Proje Yönetimi ve Planlama               |         X          |         X           |                 |
+| Derin Öğrenme Modeli Geliştirme          |         X          |         X           |                 |
+| GUI Geliştirme ve Entegrasyon            |                    |                     |         X       |
+| Deployment Süreçlerinin Belirlenmesi     |         X          |         X           |         X       |
+| Konfigürasyon, Log Yönetimi ve Testler   |         X          |         X           |         X       |
+
+1 Giriş
+Bu doküman, "¿Fake or Real?" projesinin demo sunumu için geliştirilmiş deployment planını içermektedir. Kodların incelediğimiz tasarım dokümanları ve proje planıyla uyumlu olarak, hem derin öğrenme modelinin hem de kullanıcı arayüzünün nasıl dağıtılacağı adım adım açıklanmıştır.
+
+2 Deployment Overview
+Yaklaşım:      
+    Proje, GPU desteği varsa model seçiminin otomatik yapılabildiği, kullanıcının bilgisayarında çalışacak şekilde dağıtılacaktır.  
+Araçlar:
+    Pip, bash script, git.
+Ortam:
+    Yerel geliştirme ortamı, eğitim için kullanılan GPU destekli bilgisayarımız ve demo için kullandığımız laptop.
+
+3 Deployment Process
+3.1.Kod Entegrasyonu:
+    GitHub üzerinde yapılan commit’ler ve dokümantasyon gözden geçirilir.
+3.2. CI/CD Pipeline:      
+    Modeller için yazılan scriptlerin çalıştırılması ve ardından gite yüklenmesi, gui için ise manuel testlerin ekipçe yapılması ve yüklenmesi.
+3.3. Dokümantasyon & Log Yönetimi:      
+    Tüm deployment adımları, kullanılan scriptler ve yapılandırma dosyaları loglanır; Gite detaylıca yüklenir.
+
+4 Configuration Plan
+    Projemiz configürasyon olarak sedece gerekli kütüphanelerin en son sürümlerini indirmeyi gerektirir, bunu sağlayan bir bash scripti de "requirements.sh" olarak repomuzda bulunmaktadır.
+5 Logs ve Outputs
+    Uygulama, resim yükleme, tahmin sonuçlarının pop-up gösterimi ve fine-tune işlemleri ile sorunsuz çalışıyor.  
+    Model inference logları, gerçek/sahte fotoğraf sınıflandırmasında belirlenen doğruluk oranlarını göstermektedir.

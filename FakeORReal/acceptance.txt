@@ -1,0 +1,69 @@
+İçindekiler Tablosu
+1. Giriş  
+2. Katkıda Bulunanlar Listesi  
+3. Görev Matrisi  
+4. Seçilen Kullanım Senaryoları  
+5. Acceptance Criteria  
+6. Acceptance Test Senaryoları  
+7. Test ve Kriter Açıklamaları
+
+Katkıda Bulunanlar
+    Hüseyin Yiğit USTA – Model ve Sistem Entegrasyonu  
+    Mehmet Akif APAYDIN – Veri, Model Eğitimi ve Test  
+    Berk KAFTANOĞLU – GUI ve Kullanıcı Deneyimi
+
+Görev Matrisi
+
+| Görev                                    | Hüseyin Yiğit USTA | Mehmet Akif APAYDIN | Berk KAFTANOĞLU |
+|-----------------------------------------:|:------------------:|:-------------------:|:---------------:|
+| Test Planı Hazırlığı                     |         X          |         X           |         X       |
+| Acceptance Criteria Belirleme            |         X          |         X           |                 |
+| Acceptance Test Senaryolarının Yazılması |                    |         X           |         X       |
+| Test Scriptlerinin Yazılması             |         X          |         X           |         X       |
+| Test Çalıştırma ve Sonuç Analizi         |         X          |         X           |         X       |
+
+1. Giriş
+Bu doküman, "¿Fake or Real?" projesinin dört ana kullanım senaryosuna yönelik acceptance testlerini ve bu senaryolara ilişkin ölçülebilir acceptance kriterlerini içermektedir. Tasarım dokümanlarında belirtilen gereksinimler ve kullanıcı beklentileri doğrultusunda hazırlanmıştır.
+
+2. Seçilen Kullanım Senaryoları
+Projede demo sırasında aşağıdaki dört senaryo ön plana çıkarılmıştır:
+Senaryo 1: Kullanıcının GUI üzerinden resim yükleyip sınıflandırma sürecini başlatması.
+Senaryo 2: Tahmin sürecinde animasyonların oynatılması ve tahmin sonuçlarının bir pop up aracılığıyla gösterilmesi.
+Senaryo 3: Kullanıcının girdileri için geçmiş kaydının uygun bir formatta otomatik olarak tutulması.
+Senaryo 4: Kullanıcının CSV dosyası aracılığıyla yerel modeli fine tune etme işleminin başarıyla tamamlanması.
+
+3. Acceptance Criteria
+    Senaryo 1:
+      Kriter: Kullanıcıdan input alındıktan sonra sürecin başladığını belirten animnasyonlar ekranda oynamalı.
+    Senaryo 2:
+      Kriter: Yapılan tahminin sonucunun ekranda bir pop up ile gösterilmesi.
+    Senaryo 3:
+      Kriter: Geçmişin sağ tarafta olan ve kapatılabilen geçmiş sekmesine yansıması.
+    Senaryo 4:
+      Kriter: Kullanıcı CSV dosyası yüklediğinde model güncellenmeli, fine tune işleminin bittiğine dair bir pop up ile kullanıcıya fine tune işleminin tamamlandığının bildirilmesi.
+
+4. Acceptance Test Senaryoları
+    Test 1: Resim Yükleme
+        1. Kullanıcı GUI üzerinden bir fotoğraf yükler (sürükle–bırak veya dosya seçimi).  
+        2. Sistem resim formatı ve boyutunu doğrular, önizleme yapar.  
+        3. Değerlendirme süreci başlar ve animasyon oynatılır.  
+        Beklenen Sonuç: Resmin yüklenebilmesi ve tahmin süreci animasyonlarının ekranda oynatılması.
+
+    Test 2: Tahmin Sonucu
+        1. Tahmin sürecinin biter ve sonuçlar guiye iletilir.
+        2. Gui modelin ilettiği sonuçları ekrana bir pop up aracılığıyla bastırır.
+        Beklenen Sonuç: Pop-up içerisinde classification işleminin sonucunda oluşan score vektörünün softmaxtan geçirildikten sonra olasılıkları pop upta bulunur.
+
+    Test 3: Geçmiş Kaydı
+        1. Kullanıcının yaptığı işlemler kaydedilir.
+        2. Geçmiş menüsünde bu işlemler bulunur.
+        Beklenen Sonuç: Geçmiş sekmesi sağ tarafta kapanabilir ve açılabilir şekilde bulunur ve geçmişteki resimlerin üzerine tıklayarak tekrar tahmin yapabilir veya sağ tıklayarak geçmişten temizleyebilir.
+
+    Test 4: Fine-Tune İşlemi
+        1. Kullanıcı CSV dosyası aracılığıyla yerel modeli fine tune etmek üzere yükleme (sürükleme veya seçme yoluyla) yapar.  
+        2. Fine tune işlemi başlatılır ve eğitim süreci ile ilgili bilgiler terminale bastırılır.
+        3. Eğitim tamamlandığında, ekrana bir popup ile eğitimin tamamlandığı bildirilir.  
+        Beklenen Sonuç: Model başarıyla güncellenir, pop-up gösterilir.
+
+5. Test ve Kriter Açıklamaları
+Her test, tasarım dokümanında ve proje planında belirtilen gereksinimlere uygun olarak hazırlanmıştır. Test sonuçları, modelin doğruluk oranı, GUI işlevselliği, hata yönetimi ve fine tune süreci gibi kriterleri karşılamalıdır.

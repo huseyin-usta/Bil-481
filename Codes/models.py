@@ -40,3 +40,18 @@ def create_convnext(num_classes=2, freeze_at_beginning=True):
     )
     
     return model
+
+# DenseNet Base modelinin sadece son lineer katmanı kullanarak CheXNet oluşturur.
+def create_chexnet(freeze=True):
+    model = timm.create_model("densenet121", pretrained=True)
+    
+    in_features = model.classifier.in_features
+    model.classifier = nn.Linear(in_features, 2)
+    
+    if freeze:
+        for param in model.parameters():
+            param.requires_grad = False
+        for param in model.classifier.parameters():
+            param.requires_grad = True
+    
+    return model

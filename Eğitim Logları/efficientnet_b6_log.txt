@@ -1,0 +1,36 @@
+Efficient Net B6 Eğitim Logu:
+
+Epoch 2/15 - Time: 255.61s - Train Loss: 0.7406 - Train Acc: 0.5234 - Val Loss: 0.7349 - Val Acc: 0.5039
+                                                                        
+Epoch 3/15 - Time: 256.50s - Train Loss: 0.7391 - Train Acc: 0.5223 - Val Loss: 0.7371 - Val Acc: 0.5016
+                                                                        
+Epoch 4/15 - Time: 254.03s - Train Loss: 0.7418 - Train Acc: 0.5200 - Val Loss: 0.7384 - Val Acc: 0.4987
+                                                                        
+Epoch 5/15 - Time: 254.39s - Train Loss: 0.7389 - Train Acc: 0.5254 - Val Loss: 0.7364 - Val Acc: 0.5024
+                                                                        
+Epoch 6/15 - Time: 257.64s - Train Loss: 0.7399 - Train Acc: 0.5223 - Val Loss: 0.7386 - Val Acc: 0.4992
+                                                                        
+Epoch 7/15 - Time: 256.50s - Train Loss: 0.7397 - Train Acc: 0.5243 - Val Loss: 0.7384 - Val Acc: 0.5002
+                                                                        
+Epoch 8/15 - Time: 255.60s - Train Loss: 0.7402 - Train Acc: 0.5232 - Val Loss: 0.7357 - Val Acc: 0.5018
+                                                                        
+Epoch 9/15 - Time: 255.76s - Train Loss: 0.7422 - Train Acc: 0.5184 - Val Loss: 0.7357 - Val Acc: 0.5050
+Model unfrozen at epoch 10!
+                                                                         
+Epoch 10/15 - Time: 254.31s - Train Loss: 0.7418 - Train Acc: 0.5181 - Val Loss: 0.7389 - Val Acc: 0.4994
+model saved as model_saves\b6\weights_at_10.pth!
+                                                                         
+Epoch 11/15 - Time: 256.19s - Train Loss: 0.7393 - Train Acc: 0.5233 - Val Loss: 0.7362 - Val Acc: 0.4996
+model saved as model_saves\b6\weights_at_11.pth!
+                                                                         
+Epoch 12/15 - Time: 254.46s - Train Loss: 0.7398 - Train Acc: 0.5208 - Val Loss: 0.7372 - Val Acc: 0.4999
+model saved as model_saves\b6\weights_at_12.pth!
+                                                                         
+Epoch 13/15 - Time: 254.39s - Train Loss: 0.7405 - Train Acc: 0.5192 - Val Loss: 0.7320 - Val Acc: 0.5076
+model saved as model_saves\b6\weights_at_13.pth!
+                                                                         
+Epoch 14/15 - Time: 256.37s - Train Loss: 0.7413 - Train Acc: 0.5204 - Val Loss: 0.7385 - Val Acc: 0.5010
+
+Epoch 15/15 - Time: 253.20s - Train Loss: 0.7419 - Train Acc: 0.5201 - Val Loss: 0.7385 - Val Acc: 0.5012
+
+Not: Modelin başarımı düşük olduğu için dış dünya testi yapılmadı.

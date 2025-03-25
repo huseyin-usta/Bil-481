@@ -48,6 +48,38 @@ def create_chexnet(freeze=True):
     in_features = model.classifier.in_features
     model.classifier = nn.Linear(in_features, 2)
     
+    # Son katman hariç bütün parametreleri dondurur.
+    if freeze:
+        for param in model.parameters():
+            param.requires_grad = False
+        for param in model.classifier.parameters():
+            param.requires_grad = True
+    
+    return model
+
+# Resnet 152 modelini imagenet ağırlıkları ile başlatır.
+def create_resnet152(freeze=True):
+    model = timm.create_model("resnet152", pretrained=True)
+    
+    in_features = model.fc.in_features
+    model.fc = nn.Linear(in_features, 2)
+    
+    # Son katman hariç bütün parametreleri dondurur.
+    if freeze:
+        for param in model.parameters():
+            param.requires_grad = False
+        model.fc.requires_grad = True
+        
+    return model
+
+# DenseNet 201 modelini imagenet ağırlıkları ile başlatır.
+def create_densenet(freeze=True):
+    model = timm.create_model("densenet201", pretrained=True)
+        
+    in_features = model.classifier.in_features
+    model.classifier = nn.Linear(in_features, 2)
+    
+    # Son katman hariç bütün parametreleri dondurur.
     if freeze:
         for param in model.parameters():
             param.requires_grad = False
